@@ -1,0 +1,8 @@
+5.4.3f1:2.8.0.0
+StandaloneWindows
+D:/Programmi/Editor/Data/Managed/UnityEngine.dll
+D:/Programmi/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
+D:/Programmi/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
+D:/Programmi/Editor/Data/Managed/UnityEditor.dll
+D:/Programmi/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll
+D:/Programmi/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll
