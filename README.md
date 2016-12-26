@@ -1,2 +1,2 @@
 # Germinator
-Germinator ToweDefense
+Germinator TowerDefense
