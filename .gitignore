@@ -3,4 +3,5 @@
 ./Temp/*
 *.sln
 *.csproj
+./.vs/*
 ./Library/*
