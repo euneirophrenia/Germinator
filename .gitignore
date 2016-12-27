@@ -5,3 +5,6 @@ Temp/
 *.csproj
 .vs/
 Library/
+**/.DS_Store
+*.user
+*.userprefs
