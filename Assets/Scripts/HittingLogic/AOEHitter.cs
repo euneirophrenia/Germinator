@@ -6,7 +6,7 @@ public class AOEHitter : Hitter {
     public float radius=10;
 
 
-    public override List<GameObject> getTargets(Collision collision)
+    public override List<GameObject> getTargets(Collider collision)
     {
         List<GameObject> res = new List<GameObject>();
         foreach (Collider c in Physics.OverlapSphere(collision.transform.position, radius))

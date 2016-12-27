@@ -14,35 +14,36 @@ public abstract class Hitter : MonoBehaviour {
         Effect e = new SlowEffect();
         e.effectiveness = 0.5f;
         effects.Add(e);
-
+        
     }
 
-    void OnCollisionStay(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         //if (collision.gameObject.GetComponent<Hittable>() == null)
         //    return;
-
         List<GameObject> targets = getTargets(collision);
+       
         foreach (GameObject g in targets)
         {
             Hittable other = g.GetComponent<Hittable>();
             if (other != null && hits.Contains(g.tag))
             {
                 other.Proc(effects);
-                HandleHit(collision); //per cose tipo consentire hit consecutivi
+                HandleHit(collision); //per cose tipo consentire hit consecutivi  
             }
         }
-
         if (destroy)
         {
             Destroy(this.gameObject);
         }
 
+        
+
     }
 
-    public abstract List<GameObject> getTargets(Collision collision);
+    public abstract List<GameObject> getTargets(Collider collision);
 
-    public virtual void HandleHit(Collision coll) //il multihit lo ovverrida
+    public virtual void HandleHit(Collider coll) //il multihit lo ovverrida
     {
         destroy = true;
     }

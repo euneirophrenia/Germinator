@@ -1,7 +1,7 @@
-./Assets/Personal/*
+./Assets/Personal/
 *.meta
-./Temp/*
+Temp/
 *.sln
 *.csproj
-./.vs/*
-./Library/*
+.vs/
+Library/
