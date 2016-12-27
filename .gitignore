@@ -7,4 +7,5 @@ Library/
 **/.DS_Store
 *.user
 *.userprefs
+obj/
 Assets/Personal.meta
