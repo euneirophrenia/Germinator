@@ -20,8 +20,11 @@ public class ParabolicMovement : Movement  {
 	// Update is called once per frame
 	void Update ()
     {
-        
-        direction = target.transform.position - this.transform.position;
+        if (target != null)
+        {
+            direction = target.transform.position - this.transform.position;
+            transform.LookAt(target.transform);
+        }
         direction.y = 0;
 
         float distance = direction.magnitude;
@@ -32,7 +35,7 @@ public class ParabolicMovement : Movement  {
         this.transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
         this.transform.Translate(0, velocityY * Time.deltaTime, 0, Space.World);
 
-        transform.LookAt(target.transform);
+        
 
 
     }

@@ -8,12 +8,14 @@ public class LinearMovement : Movement {
 	
 	// Update is called once per frame
 	 void Update () {
-        //Commento commitato con visual studio
-       
-        this.direction = target.transform.position - this.transform.position;
-        
+
+        if (target != null)
+        {
+            this.direction = target.transform.position - this.transform.position;
+            transform.LookAt(target.transform);
+        }
         this.transform.Translate(direction.normalized * speed * Time.deltaTime,Space.World);
 
-        transform.LookAt(target.transform);
+        
     }
 }

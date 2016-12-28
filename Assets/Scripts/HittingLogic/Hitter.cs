@@ -14,6 +14,10 @@ public abstract class Hitter : MonoBehaviour {
         Effect e = new SlowEffect();
         e.effectiveness = 0.5f;
         effects.Add(e);
+
+        Effect d = new DamageEffect();
+        d.effectiveness = 100;
+        effects.Add(d);
         
     }
 

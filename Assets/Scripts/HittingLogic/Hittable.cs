@@ -16,7 +16,7 @@ public class Hittable : MonoBehaviour {
         }
     }
 	
-	public IEnumerator Proc(Effect effect)
+	public virtual IEnumerator Proc(Effect effect)
     {
         //Debug.Log("Procced " + effect.effectScriptName + " for " + effect.effectiveness + " on " + this.gameObject.name);
 
