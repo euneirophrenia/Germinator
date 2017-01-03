@@ -11,13 +11,15 @@ public abstract class Hitter : MonoBehaviour {
 
     void Start()
     {
-        Effect e = new SlowEffect();
-        e.effectiveness = 0.5f;
-        effects.Add(e);
+		#if UNITY_EDITOR
+	        Effect e = new SlowEffect();
+	        e.effectiveness = 0.5f;
+	        effects.Add(e);
 
-        Effect d = new DamageEffect();
-        d.effectiveness = 100;
-        effects.Add(d);
+	        Effect d = new DamageEffect();
+	        d.effectiveness = 100;
+	        //effects.Add(d);
+		#endif
         
     }
 
@@ -25,7 +27,7 @@ public abstract class Hitter : MonoBehaviour {
     {
         //if (collision.gameObject.GetComponent<Hittable>() == null)
         //    return;
-        List<GameObject> targets = getTargets(collision);
+		IEnumerable<GameObject> targets = getTargets(collision);
        
         foreach (GameObject g in targets)
         {
@@ -45,7 +47,7 @@ public abstract class Hitter : MonoBehaviour {
 
     }
 
-    public abstract List<GameObject> getTargets(Collider collision);
+	public abstract IEnumerable<GameObject> getTargets(Collider collision);
 
     public virtual void HandleHit(Collider coll) //il multihit lo ovverrida
     {
