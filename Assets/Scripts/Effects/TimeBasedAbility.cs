@@ -28,9 +28,6 @@ public abstract class TimeBasedAbility : EffectScript {
 
 	}
 
-    public abstract void UnApply();
-    public abstract void Apply();
-
     public override void RefreshEffect(Effect e, float actualEffectiveness)
     {
         effectiveness = actualEffectiveness;

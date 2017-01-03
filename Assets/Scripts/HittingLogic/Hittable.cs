@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class Hittable : MonoBehaviour {
 
 
     public int HP = 100;
-    public static Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
+    public Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
 
     public void Proc(List<Effect> effects)
     {
@@ -56,5 +57,5 @@ public class Hittable : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
-
+		
 }

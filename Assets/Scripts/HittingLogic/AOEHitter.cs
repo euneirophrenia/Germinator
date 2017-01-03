@@ -5,14 +5,14 @@ using System.Diagnostics;
 
 public class AOEHitter : Hitter {
 
-    public float radius=10;
+    public float radius=100;
 
 
-	public override IEnumerable<GameObject> getTargets(Collider collision)
+	public override IEnumerable<Hittable> getTargets(Collider collision)
     {
 		return from x in Physics.OverlapSphere(collision.transform.position, radius) 
 				where x.gameObject.GetComponent<Hittable>()!=null 
-			select x.gameObject;
+			select x.gameObject.GetComponent<Hittable>();
     }
 
 	[Conditional("UNITY_EDITOR")]

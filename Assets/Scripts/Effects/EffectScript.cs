@@ -10,4 +10,10 @@ public abstract class EffectScript : MonoBehaviour {
         effectiveness = actualEffectivenes;
     }
 
+	public virtual void Apply() { } 
+	public virtual void UnApply() 
+	{
+		Destroy(this);
+	} 
+
 }

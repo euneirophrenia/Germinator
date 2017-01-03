@@ -8,11 +8,9 @@ public class MultiHitter : Hitter {
 
     public int maxHits = 5;
 
-	public override IEnumerable<GameObject> getTargets(Collider collision)
+	public override IEnumerable<Hittable> getTargets(Collider collision)
     {
-        List<GameObject> res = new List<GameObject>();
-        res.Add(collision.gameObject);
-        return res;
+		yield return collision.gameObject.GetComponent<Hittable>();
     }
 
     public override void HandleHit(Collider coll)

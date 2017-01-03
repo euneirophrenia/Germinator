@@ -27,12 +27,11 @@ public abstract class Hitter : MonoBehaviour {
     {
         //if (collision.gameObject.GetComponent<Hittable>() == null)
         //    return;
-		IEnumerable<GameObject> targets = getTargets(collision);
+		IEnumerable<Hittable> targets = getTargets(collision);
        
-        foreach (GameObject g in targets)
-        {
-            Hittable other = g.GetComponent<Hittable>();
-            if (other != null && hits.Contains(g.tag))
+		foreach (Hittable other in targets)
+		{
+            if (other!= null && hits.Contains(other.tag))
             {
                 other.Proc(effects);
                 HandleHit(collision); //per cose tipo consentire hit consecutivi  
@@ -47,10 +46,11 @@ public abstract class Hitter : MonoBehaviour {
 
     }
 
-	public abstract IEnumerable<GameObject> getTargets(Collider collision);
+	public abstract IEnumerable<Hittable> getTargets(Collider collision);
 
     public virtual void HandleHit(Collider coll) //il multihit lo ovverrida
     {
         destroy = true;
     }
+
 }

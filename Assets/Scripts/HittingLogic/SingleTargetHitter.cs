@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 public class SingleTargetHitter : Hitter {
 
-	public override IEnumerable<GameObject> getTargets(Collider collision)
+	public override IEnumerable<Hittable> getTargets(Collider collision)
     {
-        List<GameObject> res =new List<GameObject>();
-        res.Add(collision.gameObject);
-        return res;
+		yield return collision.gameObject.GetComponent<Hittable>();
+        
     }
 
 }

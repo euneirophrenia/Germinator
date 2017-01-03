@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 
-public class Debuff //attributo fratello di Buff
+[AttributeUsage(AttributeTargets.Class)]
+public class Debuff : Attribute
 {
 
 }
