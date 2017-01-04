@@ -7,7 +7,8 @@ public class Hittable : MonoBehaviour {
 
 
     public int HP = 100;
-    public Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
+    //public Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
+	public SensibilityDictionary sensibility;
 
     public void Proc(List<Effect> effects)
     {
@@ -45,7 +46,7 @@ public class Hittable : MonoBehaviour {
 
     public float getEffectiveness(System.Type t)
     {
-        return (sensibility.ContainsKey(t) ? sensibility[t] : 1.0f);
+		return sensibility[t];
     }
 
     public void addToHp(int value)
@@ -58,4 +59,14 @@ public class Hittable : MonoBehaviour {
         }
     }
 		
+	//per popolare correttamente la mappa dall'editor di unity
+	//viene eseguito solo nell'editor, non davvero a runtime
+	void OnValidate()
+	{
+		sensibility.Build();
+		/*foreach (System.Type t in sensibility.Keys)
+		{
+			Debug.Log(t.Name+ " "+ sensibility[t]);
+		}*/
+	}
 }

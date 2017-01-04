@@ -3,7 +3,8 @@ using System;
 
 public class SlowEffect : Effect
 {
-    private float effect = 0.1f;
+    private float effect = 2f;
+	private int tick = 3;
 
     public float cooldown
     {
@@ -43,12 +44,12 @@ public class SlowEffect : Effect
     {
         get
         {
-            return 3;
+            return tick;
         }
 
         set
         {
-           
+			tick=value;
         }
     }
 }

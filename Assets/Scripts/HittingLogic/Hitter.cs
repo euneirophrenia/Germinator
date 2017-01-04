@@ -13,12 +13,12 @@ public abstract class Hitter : MonoBehaviour {
     {
 		#if UNITY_EDITOR
 	        Effect e = new SlowEffect();
-	        e.effectiveness = 0.5f;
+	        e.effectiveness = 2f; //dimezza velocita', cambiata convenzione in modo da essere in linea col resto
 	        effects.Add(e);
 
 	        Effect d = new DamageEffect();
 	        d.effectiveness = 100;
-	        //effects.Add(d);
+	        effects.Add(d);
 		#endif
         
     }

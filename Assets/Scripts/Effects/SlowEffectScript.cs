@@ -11,12 +11,12 @@ public class SlowEffectScript : TimeBasedAbility {
     {
 		Movement movement=this.gameObject.GetComponent<Movement>();
 		if (movement!= null)
-			movement.speed *= effectiveness;
+			movement.speed /= effectiveness;
     }
 
     public override void UnApply()
     {
-        this.gameObject.GetComponent<Movement>().speed /= effectiveness;
+        this.gameObject.GetComponent<Movement>().speed *= effectiveness;
         Destroy(this);
     }
 
