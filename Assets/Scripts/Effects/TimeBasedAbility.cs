@@ -31,9 +31,9 @@ public abstract class TimeBasedAbility : EffectScript {
     public override void RefreshEffect(Effect e, float actualEffectiveness)
     {
         effectiveness = actualEffectiveness;
-        int attempt = remainingTicks + e.ticks;
-        remainingTicks = (attempt > 0 ? attempt : e.ticks);
-        cooldown = e.cooldown;
+        int attempt = remainingTicks + e.Ticks;
+        remainingTicks = (attempt > 0 ? attempt : e.Ticks);
+        cooldown = e.Cooldown;
         activeCoolDown = 0;
 
     }

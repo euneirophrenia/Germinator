@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 [Debuff]
-public class SlowEffectScript : TimeBasedAbility {
+public class SlowScript : TimeBasedAbility {
 
     //essenzialmente eredita solo per usufruire dei servizi e non doverli duplicare 
 

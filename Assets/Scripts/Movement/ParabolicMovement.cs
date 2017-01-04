@@ -7,14 +7,16 @@ public class ParabolicMovement : Movement  {
     public GameObject target;
 
     private float velocityY;
+	private Transform other;
 
 	// Use this for initialization
 	 void Start () {
         
-        direction = target.transform.position - this.transform.position;
+		other = target.transform;
+		direction = other.position - cachedTransform.position;
         direction.y = 0;
         float distance = direction.magnitude;
-        velocityY = (0.5f * gravity * distance / speed) - (speed * this.transform.position.y / distance); //trust me
+		velocityY = (0.5f * gravity * distance / speed) - (speed * cachedTransform.position.y / distance); //trust me
 	}
 	
 	// Update is called once per frame
@@ -22,21 +24,19 @@ public class ParabolicMovement : Movement  {
     {
         if (target != null)
         {
-            direction = target.transform.position - this.transform.position;
-            transform.LookAt(target.transform);
+			direction = other.position - cachedTransform.position;
+            cachedTransform.LookAt(other);
         }
         direction.y = 0;
 
         float distance = direction.magnitude;
-        velocityY = -gravity * Time.deltaTime + (0.5f * gravity * distance / speed) - (speed * this.transform.position.y / distance);
+		velocityY = -gravity * Time.deltaTime + (0.5f * gravity * distance / speed) - (speed * cachedTransform.position.y / distance);
         //velocityY -= gravity * Time.deltaTime; piu' naturale ma cade corto, tipicamente, a meno che non sia fermo il bersaglio
         
 
-        this.transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
-        this.transform.Translate(0, velocityY * Time.deltaTime, 0, Space.World);
+		cachedTransform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
+		cachedTransform.Translate(0, velocityY * Time.deltaTime, 0, Space.World);
 
         
-
-
     }
 }

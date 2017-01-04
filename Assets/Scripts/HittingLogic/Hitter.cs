@@ -12,12 +12,11 @@ public abstract class Hitter : MonoBehaviour {
     void Start()
     {
 		#if UNITY_EDITOR
-	        Effect e = new SlowEffect();
-	        e.effectiveness = 2f; //dimezza velocita', cambiata convenzione in modo da essere in linea col resto
+	        Effect e = new Slow(2f, 3); //dimezza velocita', cambiata convenzione in modo da essere in linea col resto
+		/*prima era l'unico effetto a essere tanto piu' potente tanto piu' era basso il valore */
 	        effects.Add(e);
 
-	        Effect d = new DamageEffect();
-	        d.effectiveness = 100;
+	        Effect d = new Damage(100);
 	        effects.Add(d);
 		#endif
         
@@ -40,9 +39,7 @@ public abstract class Hitter : MonoBehaviour {
         if (destroy)
         {
             Destroy(this.gameObject);
-        }
-
-        
+        }    
 
     }
 

@@ -5,16 +5,22 @@ public class LinearMovement : Movement {
 
     public GameObject target;
 
+	private Transform other;
+
+	void Start()
+	{
+		other = target.transform;
+	}
 	
 	// Update is called once per frame
 	 void Update () {
 
         if (target != null)
         {
-            this.direction = target.transform.position - this.transform.position;
-            transform.LookAt(target.transform);
+            this.direction = other.position - this.cachedTransform.position;
+            cachedTransform.LookAt(other);
         }
-        this.transform.Translate(direction.normalized * speed * Time.deltaTime,Space.World);
+        cachedTransform.Translate(direction.normalized * speed * Time.deltaTime,Space.World);
 
         
     }

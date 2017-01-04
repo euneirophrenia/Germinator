@@ -7,7 +7,8 @@ public class Hittable : MonoBehaviour {
 
 
     public int HP = 100;
-    //public Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
+    
+	//public Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
 	public SensibilityDictionary sensibility;
 
     public void Proc(List<Effect> effects)
@@ -24,12 +25,10 @@ public class Hittable : MonoBehaviour {
 
         System.Type tipo = System.Type.GetType(effect.effectScriptName);
         Component previous = this.gameObject.GetComponent(tipo);
-        if (previous == null)
-        {
-            this.gameObject.AddComponent(tipo);
-            previous = this.gameObject.GetComponent(tipo);
-        }
-        float effectiveness = effect.effectiveness * getEffectiveness(tipo);
+		if (previous == null)
+            previous= this.gameObject.AddComponent(tipo);
+       
+		float effectiveness = effect.Effectiveness * sensibility[tipo];
 
         EffectScript script = (EffectScript)previous;
 

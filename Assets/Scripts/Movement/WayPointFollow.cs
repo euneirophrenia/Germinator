@@ -8,20 +8,22 @@ public class WayPointFollow: Movement {
     private GameObject next;
     private int current = 0;
     private float epsilon = 5f;
+	private Transform other;
 
 	// Use this for initialization
     void Start () {
         next = waypoints[0];
+		other = next.transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         
-        direction = next.transform.position - this.transform.position;
+		direction = other.position - cachedTransform.position;
         direction.y = 0;
 
-        this.transform.Translate(speed * direction.normalized * Time.deltaTime, Space.World);
-        transform.LookAt(next.transform);
+        cachedTransform.Translate(speed * direction.normalized * Time.deltaTime, Space.World);
+        cachedTransform.LookAt(other.transform);
 
         if (direction.magnitude<=epsilon)
         {
@@ -33,6 +35,7 @@ public class WayPointFollow: Movement {
             }
             current = current + 1;
             next = waypoints[current];
+			other = next.transform;
         }
 
 
