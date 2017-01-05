@@ -3,24 +3,12 @@ using System.Collections.Generic;
 
 public abstract class Hitter : MonoBehaviour {
 
-    public List<Effect> effects = new List<Effect>();
+	public List<Effect> effects;
 
     public List<string> hits;
 
     protected bool destroy = false;
 
-    void Start()
-    {
-		#if UNITY_EDITOR
-	        Effect e = new Slow(2f, 3); //dimezza velocita', cambiata convenzione in modo da essere in linea col resto
-		/*prima era l'unico effetto a essere tanto piu' potente tanto piu' era basso il valore */
-	        effects.Add(e);
-
-	        Effect d = new Damage(100);
-	        effects.Add(d);
-		#endif
-        
-    }
 
     void OnTriggerEnter(Collider collision)
     {

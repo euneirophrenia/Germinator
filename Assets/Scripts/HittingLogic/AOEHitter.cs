@@ -7,7 +7,6 @@ public class AOEHitter : Hitter {
 
     public float radius=100;
 
-
 	public override IEnumerable<Hittable> getTargets(Collider collision)
     {
 		return from x in Physics.OverlapSphere(collision.transform.position, radius) 
