@@ -38,10 +38,14 @@ public abstract class Effect : ScriptableObject //non tutti useranno tutto
 		this.scriptName=this.GetType().Name+"Script";
 	}
 
-	public string effectScriptName { 
+	public virtual string effectScriptName { 
 		get { 
 			return scriptName; 
 		} 
+		set
+		{
+			scriptName = value;
+		}
 	} 
 
     public virtual float Effectiveness { 
