@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [Serializable]
-[CreateAssetMenu(fileName="SlowEffect", menuName="Effect/Slow")]
+[CreateAssetMenu(fileName="Slow", menuName="Effect/Slow")]
 public class Slow : Effect
 {
 	

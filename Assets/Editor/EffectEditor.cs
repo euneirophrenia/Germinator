@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Reflection;
+using System.Linq;
 
 
 [CustomEditor(typeof(Effect), true)] //true cosi che sia usato nelle sottoclassi!
@@ -11,6 +12,7 @@ public class EffectEditor : Editor
 	private Effect e;
 	private GUIStyle tipstyle;
 	private Assembly referenced;
+	private string[] scripts;
 
 	private GUIContent effect;
 
@@ -39,11 +41,14 @@ public class EffectEditor : Editor
 		{
 			e.Cooldown = EditorGUILayout.FloatField("Cooldown", e.Cooldown);
 			e.Ticks = EditorGUILayout.IntField("Ticks", e.Ticks);
-			EditorGUILayout.LabelField("L'effetto durerà <b>Ticks*Cooldown secondi</b>\n" +
-				"<b>Ticks=0</b> vuol dire che l'effetto dura <i>per sempre</i>\n", tipstyle);
+			EditorGUILayout.LabelField("L'effetto durerà <b>Ticks*Cooldown secondi</b>\n",tipstyle);
+			if (e.Ticks==0)
+				EditorGUILayout.HelpBox("Ticks=0 provoca un effetto che dura per sempre.", MessageType.Info);
 		}
+		else if (!isBadName(e.effectScriptName))
+			EditorGUILayout.LabelField("Per questo effetto si possono ignorare <b>Ticks</b> e <b>Cooldown</b>", tipstyle);
 		else
-			EditorGUILayout.LabelField("<i>Per questo effetto si possono ignorare <b>Ticks</b> e <b>Cooldown</b></i>", tipstyle);
+			EditorGUILayout.LabelField("Non so dirti quali parametri occorrano perché non trovo lo script.", tipstyle);
 
 		EditorGUILayout.Separator();
 	
@@ -51,14 +56,30 @@ public class EffectEditor : Editor
 		if (isBadName(e.effectScriptName))
 		{
 			EditorGUILayout.HelpBox("E' possibile che per questo effetto tu non abbia ancora creato lo script o lo abbia chiamato in altro modo." +
-				"Comunque, ricordati di settare opportunamente il nome dello script corrispondente qui sotto.", MessageType.Warning);
+				"\nComunque, ricordati di settare opportunamente il nome dello script corrispondente.\n" +
+				"Se si è rispettata la convenzione (<NomeEffetto>+\"Script\"), il nome dovrebbe comparire automaticamente.", MessageType.Warning);
+			UpdateScripts();
+
+			EditorGUILayout.Separator();
+			string message = "<b>Effetti attualmente implementati</b>\n";
+			foreach (string s in scripts)
+			{
+				message+="\n\t<i>"+s+"</i>\n";
+			}
+			EditorGUILayout.LabelField(message, tipstyle);
 		}
-		EditorGUILayout.LabelField("<i>Da modificare solo se non si è rispettata la convenzione</i>",tipstyle);
 	}
 
 	private bool isBadName(string s)
 	{
 		return String.IsNullOrEmpty(s) || referenced.GetType(s) == null || 
 			!typeof(EffectScript).IsAssignableFrom(referenced.GetType(e.effectScriptName));
+	}
+
+	private void UpdateScripts()
+	{
+		scripts=(from x in AppDomain.CurrentDomain.GetAssemblies().SelectMany(s=>s.GetTypes())
+			where typeof(EffectScript).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
+			select x.Name).ToArray();
 	}
 }

@@ -22,7 +22,7 @@ using UnityEngine;
 public abstract class Effect : ScriptableObject //non tutti useranno tutto
 {
 	[SerializeField]
-	protected float effect =0f; 
+	protected float effect =0f; //con  significato diverso a seconda dell'effetto concreto, puo' essere percentuale di slow dichiarata o altro
 
 	[SerializeField]
 	protected int ticks = 0;
@@ -55,7 +55,7 @@ public abstract class Effect : ScriptableObject //non tutti useranno tutto
 		set {
 			effect=value;
 		}
-	}//con  significato diverso a seconda dell'effetto concreto, puo' essere percentuale di slow dichiarata o altro
+	}
 
  	public virtual int Ticks {
 		get {

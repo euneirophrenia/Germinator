@@ -13,4 +13,11 @@ public abstract class Movement : MonoBehaviour {
 		cachedTransform = this.transform;
 	}
 
+	public Vector3 Direction
+	{
+		get {
+			return direction;
+		}
+	}
+
 }

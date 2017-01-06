@@ -34,7 +34,7 @@ public abstract class TimeBasedAbility : EffectScript {
         int attempt = remainingTicks + e.Ticks;
         remainingTicks = (attempt > 0 ? attempt : e.Ticks);
         cooldown = e.Cooldown;
-        activeCoolDown = 0;
+        activeCoolDown = 0; //nuovo tick al refresh, mi pare sensato
 
     }
 }

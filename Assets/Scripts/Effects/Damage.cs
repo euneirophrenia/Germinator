@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-[CreateAssetMenu(fileName="DamageEffect", menuName="Effect/Damage")]
+[CreateAssetMenu(fileName="Damage", menuName="Effect/Damage")]
 public class Damage : Effect
 { 
 	public Damage(float value) : base()
