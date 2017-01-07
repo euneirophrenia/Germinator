@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+//using System.Runtime.CompilerServices;
 
 public abstract class Hitter : MonoBehaviour {
 
@@ -8,14 +9,19 @@ public abstract class Hitter : MonoBehaviour {
     public List<string> hits;
 
     protected bool destroy = false;
+	private bool isTriggering=false;
 
 
-    void OnTriggerEnter(Collider collision)
+	//TODO trova una soluzione non temporanea
+	//[MethodImpl(MethodImplOptions.Synchronized)]
+    void OnTriggerStay(Collider collision)
     {
-        //if (collision.gameObject.GetComponent<Hittable>() == null)
-        //    return;
+		if (isTriggering)
+			return; 
+		isTriggering=true;
+
 		IEnumerable<Hittable> targets = getTargets(collision);
-       
+
 		foreach (Hittable other in targets)
 		{
             if (other!= null && hits.Contains(other.tag))
@@ -26,10 +32,14 @@ public abstract class Hitter : MonoBehaviour {
         }
         if (destroy)
         {
-            Destroy(this.gameObject);
-        }    
-
+			Destroy(this.gameObject);
+        }  
     }
+
+	public void Update()
+	{
+		isTriggering=false;
+	}
 
 	public abstract IEnumerable<Hittable> getTargets(Collider collision);
 

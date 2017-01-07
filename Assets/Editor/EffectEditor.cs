@@ -41,7 +41,7 @@ public class EffectEditor : Editor
 		{
 			e.Cooldown = EditorGUILayout.FloatField("Cooldown", e.Cooldown);
 			e.Ticks = EditorGUILayout.IntField("Ticks", e.Ticks);
-			EditorGUILayout.LabelField("L'effetto durerà <b>Ticks*Cooldown secondi</b>\n",tipstyle);
+			EditorGUILayout.LabelField("L'effetto durerà <b>Ticks*Cooldown (" + e.Ticks * e.Cooldown + ") secondi</b>\n.",tipstyle);
 			if (e.Ticks==0)
 				EditorGUILayout.HelpBox("Ticks=0 provoca un effetto che dura per sempre.", MessageType.Info);
 		}
