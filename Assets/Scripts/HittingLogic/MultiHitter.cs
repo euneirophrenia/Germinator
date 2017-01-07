@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 /* L'idea qui e' la balestra che penetra
  * 1 hit alla volta
@@ -10,13 +11,19 @@ public class MultiHitter : Hitter {
 
 	public override IEnumerable<Hittable> getTargets(Collider collision)
     {
-		yield return collision.gameObject.GetComponent<Hittable>();
+		Hittable h= collision.gameObject.GetComponent<Hittable>();
+        if (h == null)
+            yield break;
+        yield return h;
     }
 
     public override void HandleHit(Collider coll)
     {
-        maxHits--;
-        destroy = maxHits == 0;
+        if (didHit)
+        {
+            maxHits--;
+            destroy = maxHits == 0;
+        }
     }
 
 }

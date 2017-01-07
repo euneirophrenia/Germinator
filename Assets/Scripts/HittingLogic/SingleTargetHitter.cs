@@ -5,8 +5,11 @@ public class SingleTargetHitter : Hitter {
 
 	public override IEnumerable<Hittable> getTargets(Collider collision)
     {
-		yield return collision.gameObject.GetComponent<Hittable>();
-        
+        Hittable h = collision.gameObject.GetComponent<Hittable>();
+        if (h == null)
+            yield break;
+        yield return h;
+
     }
 
 }
