@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [Serializable]
-public class TowerBluePrint : ScriptableObject //creabile dall'editor, come prefab, non so se può servire o no
+public class TowerBlueprint : ScriptableObject //creabile dall'editor, come prefab, non so se può servire o no
 {
     public GameObject turretPrefab;
     public float cost; //magari int

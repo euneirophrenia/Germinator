@@ -1,38 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-//using System.Runtime.CompilerServices;
+using System;
 
 public abstract class Hitter : MonoBehaviour {
 
 	public List<Effect> effects;
 
-    public List<string> hits;
+    public string[] hits;
 
     protected bool destroy = false;
 	private bool isTriggering=false;
-    protected bool didHit = false;
 
-
-	//TODO trova una soluzione non temporanea
-	//[MethodImpl(MethodImplOptions.Synchronized)]
     void OnTriggerEnter(Collider collision)
     {
 		if (isTriggering)
 			return; 
 		isTriggering=true;
 
-        IEnumerable<Hittable> targets = getTargets(collision);
+		Hittable other = collision.GetComponent<Hittable>();
 
-		foreach (Hittable other in targets)
-		{
-            if (other!= null && hits.Contains(other.tag))
-            {
-                other.Proc(effects);
-                didHit = true;
-               
-            }
-        }
-        HandleHit(collision); //per cose tipo consentire hit consecutivi  
+		if (other==null || !CanHit(other))
+			return;
+
+		other.Proc(effects);
+          
+        HandleHit(other); //per cose tipo consentire hit consecutivi  
 
         if (destroy)
         {
@@ -40,17 +32,26 @@ public abstract class Hitter : MonoBehaviour {
         }  
     }
 
+	protected bool CanHit(Hittable h)
+	{
+		foreach(string s in hits)
+		{
+			if (h.CompareTag(s))
+				return true;
+		}
+
+		return false;
+	}
+
 	public void Update()
 	{
 		isTriggering=false;
-        didHit = false;
 	}
 
-	public abstract IEnumerable<Hittable> getTargets(Collider collision);
 
-    public virtual void HandleHit(Collider coll) //il multihit lo ovverrida
+    public virtual void HandleHit(Hittable hit) //il multihit lo ovverrida
     {
-        destroy = didHit;
+        destroy = true;
     }
 
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EagerUpgrader : Upgrader
 {
-    public  TowerBluePrint[] GetUpgrades(TowerBluePrint tower)
+    public  TowerBlueprint[] GetUpgrades(TowerBlueprint tower)
     {
         throw new NotImplementedException();
     }

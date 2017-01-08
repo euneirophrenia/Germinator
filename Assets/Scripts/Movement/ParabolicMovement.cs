@@ -3,40 +3,45 @@ using System.Collections;
 
 public class ParabolicMovement : Movement  {
 
-    public float gravity = 10;
-    public GameObject target;
+	public GameObject target;
 
-    private float velocityY;
+	public float gravity = 10;
+	private float velocityY;
+    private float distance;
 	private Transform other;
+    private Vector3 otherPreviousPosition;
+    private Vector3 otherVelocity;
+    private Vector3 drift;
 
-	// Use this for initialization
-	 void Start () {
-        
-		other = target.transform;
-		direction = other.position - cachedTransform.position;
-        direction.y = 0;
-        float distance = direction.magnitude;
-		velocityY = (0.5f * gravity * distance / speed) - (speed * cachedTransform.position.y / distance); //trust me
-	}
-	
+    private float timeBeforeHit;
+
+    void Start () {
+
+        other = target.transform;
+        otherPreviousPosition = other.position;
+        this.direction = cachedTransform.position - other.position;
+        distance = direction.magnitude;
+        timeBeforeHit = distance / speed;
+        this.drift = -direction / timeBeforeHit;
+
+        velocityY = (other.position.y - cachedTransform.position.y)/timeBeforeHit + (0.5f*gravity*timeBeforeHit);
+    }
+
 	// Update is called once per frame
 	void Update ()
-    {
+	{
         if (target != null)
         {
-			direction = other.position - cachedTransform.position;
-            cachedTransform.LookAt(other);
+            otherVelocity = (other.position - otherPreviousPosition) / Time.deltaTime;
+            otherPreviousPosition = other.position;
+            this.direction = otherVelocity;
+            this.direction += drift;
+            velocityY -= gravity * Time.deltaTime;
+            direction.y = velocityY;
+            cachedTransform.rotation = Quaternion.LookRotation(direction);
         }
-        direction.y = 0;
-
-        float distance = direction.magnitude;
-		velocityY = -gravity * Time.deltaTime + (0.5f * gravity * distance / speed) - (speed * cachedTransform.position.y / distance);
-        //velocityY -= gravity * Time.deltaTime; piu' naturale ma cade corto, tipicamente, a meno che non sia fermo il bersaglio
         
+        cachedTransform.Translate(direction * Time.deltaTime, Space.World);
 
-		cachedTransform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
-		cachedTransform.Translate(0, velocityY * Time.deltaTime, 0, Space.World);
-
-        
-    }
+	}
 }

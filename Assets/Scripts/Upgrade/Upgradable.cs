@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Upgradable : MonoBehaviour {
 
-    public TowerBluePrint blueprint;
-    private TowerBluePrint[] upgrades;
+    public TowerBlueprint blueprint;
+    private TowerBlueprint[] upgrades;
 
 
 	void OnMouseDown()
@@ -19,7 +19,7 @@ public class Upgradable : MonoBehaviour {
         */
     }
 
-    public void Build(TowerBluePrint blueprint)
+    public void Build(TowerBlueprint blueprint)
     {
         //TODO: logica di sostituzione dei pezzi dell'upgrade
     }
