@@ -9,21 +9,10 @@ public class MultiHitter : Hitter {
 
     public int maxHits = 5;
 
-	public override IEnumerable<Hittable> getTargets(Collider collision)
+	public override void HandleHit(Hittable hit)
     {
-		Hittable h= collision.gameObject.GetComponent<Hittable>();
-        if (h == null)
-            yield break;
-        yield return h;
-    }
-
-    public override void HandleHit(Collider coll)
-    {
-        if (didHit)
-        {
-            maxHits--;
-            destroy = maxHits == 0;
-        }
+        maxHits--;
+        destroy = maxHits == 0;
     }
 
 }
