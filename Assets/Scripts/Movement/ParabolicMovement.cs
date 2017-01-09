@@ -10,7 +10,6 @@ public class ParabolicMovement : Movement  {
     private float distance;
 	private Transform other;
     private Vector3 otherPreviousPosition;
-    private Vector3 otherVelocity;
     private Vector3 drift;
 
     private float timeBeforeHit;
@@ -19,10 +18,10 @@ public class ParabolicMovement : Movement  {
 
         other = target.transform;
         otherPreviousPosition = other.position;
-        this.direction = cachedTransform.position - other.position;
+		this.direction = other.position - cachedTransform.position;
         distance = direction.magnitude;
         timeBeforeHit = distance / speed;
-        this.drift = -direction / timeBeforeHit;
+        this.drift = direction / timeBeforeHit;
 
         velocityY = (other.position.y - cachedTransform.position.y)/timeBeforeHit + (0.5f*gravity*timeBeforeHit);
     }
@@ -32,16 +31,17 @@ public class ParabolicMovement : Movement  {
 	{
         if (target != null)
         {
-            otherVelocity = (other.position - otherPreviousPosition) / Time.deltaTime;
+			this.direction = (other.position - otherPreviousPosition) / Time.deltaTime;
             otherPreviousPosition = other.position;
-            this.direction = otherVelocity;
             this.direction += drift;
             velocityY -= gravity * Time.deltaTime;
             direction.y = velocityY;
-            cachedTransform.rotation = Quaternion.LookRotation(direction);
         }
-        
         cachedTransform.Translate(direction * Time.deltaTime, Space.World);
+	}
 
+	void FixedUpdate()
+	{
+		cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, Quaternion.LookRotation(direction), 0.25f);
 	}
 }

@@ -7,31 +7,31 @@ public class PredictingLinearMovement : Movement {
 
   	private Transform other;
     private Vector3 otherPreviousPosition;
-    private Vector3 otherVelocity;
     private Vector3 drift;
 
 	void Start()
 	{
 		other = target.transform;
         otherPreviousPosition = other.position;
-        this.direction = cachedTransform.position - other.position;
+		this.direction =  other.position- cachedTransform.position;
         float timeBeforeHit = direction.magnitude / speed;
-        this.drift = -direction/timeBeforeHit;
+		this.drift = direction/timeBeforeHit;
+		//cachedTransform.rotation = Quaternion.LookRotation(direction);
 	}
 	
 	 void Update () {
 
         if (target != null)
         {
-            otherVelocity = (other.position - otherPreviousPosition)/Time.deltaTime;
+			this.direction = (other.position - otherPreviousPosition)/Time.deltaTime  + drift;
             otherPreviousPosition = other.position;
-            this.direction = otherVelocity;
-            this.direction += drift;
-
-            cachedTransform.rotation = Quaternion.LookRotation(direction);
+            
         }
         cachedTransform.Translate(direction * Time.deltaTime,Space.World);
-
-        
     }
+
+	void FixedUpdate()
+	{
+		cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, Quaternion.LookRotation(direction), 0.3f);
+	}
 }
