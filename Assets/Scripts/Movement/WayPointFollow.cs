@@ -13,15 +13,14 @@ public class WayPointFollow: Movement {
     void Start () {
         next = waypoints[0];
 		other = next.transform;
-	}
+        direction = other.position - cachedTransform.position;
+        direction = direction.normalized;
+    }
 	
 
 	void Update () {
         
-		direction = other.position - cachedTransform.position;
-        direction.y = 0;
-	
-        cachedTransform.Translate(speed * direction.normalized * Time.deltaTime, Space.World);
+        cachedTransform.Translate(speed * direction * Time.deltaTime, Space.World);
         cachedTransform.LookAt(other.transform);
     }
 
@@ -29,15 +28,16 @@ public class WayPointFollow: Movement {
 	{
 		if (collision.CompareTag(waypointtag))
 		{
-			if (current==waypoints.Length-1)
+            current = int.Parse(collision.name);
+			if (current==waypoints.Length)
 			{
 				Destroy(this.gameObject);
-				//eventuali cose da fare alla distruzione non sono da mettere da qua
 				return;
 			}
-			current = current + 1;
 			next = waypoints[current];
 			other = next.transform;
-		}
+            direction = other.position - cachedTransform.position;
+            direction = direction.normalized;
+        }
 	}
 }
