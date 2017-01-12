@@ -20,4 +20,9 @@ public abstract class Movement : MonoBehaviour {
 		}
 	}
 
+	public abstract GameObject CurrentTarget
+	{
+		get; set;
+	}
+
 }

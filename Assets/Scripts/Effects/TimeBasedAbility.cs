@@ -11,20 +11,20 @@ public abstract class TimeBasedAbility : EffectScript {
    
 	// Update is called once per frame
 	void Update () {
+		
         if (activeCoolDown<=0)
         {
             this.Apply();
             activeCoolDown = cooldown;
             remainingTicks--;
+			return;
         }
         else
         {
             activeCoolDown -= Time.deltaTime;
-        }
-
-        if (remainingTicks <= 0)
-            this.UnApply();
-          
+        } 
+		if (remainingTicks <= 0)
+			this.UnApply();
 
 	}
 

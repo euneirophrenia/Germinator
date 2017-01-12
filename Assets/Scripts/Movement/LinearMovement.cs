@@ -18,11 +18,25 @@ public class LinearMovement : Movement
 
         if (target != null)
         {
-            this.direction = other.position - this.cachedTransform.position;
+			this.direction = (other.position - this.cachedTransform.position).normalized;
             cachedTransform.LookAt(other);
         }
-        cachedTransform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
-
+        cachedTransform.Translate(direction * speed * Time.deltaTime, Space.World);
 
     }
+
+	public override GameObject CurrentTarget {
+		get {
+			return target;
+		}
+		set {
+			if (target==null)
+				target = value;
+			else 
+			{
+				target=value;
+				Start();
+			}
+		}
+	}
 }

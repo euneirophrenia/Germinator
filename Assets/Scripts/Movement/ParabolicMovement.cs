@@ -4,15 +4,16 @@ using System.Collections;
 public class ParabolicMovement : Movement  {
 
 	public GameObject target;
-
 	public float gravity = 10;
+
 	private float velocityY;
     private float distance;
+	private float timeBeforeHit;
+
 	private Transform other;
+
     private Vector3 otherPreviousPosition;
     private Vector3 drift;
-
-    private float timeBeforeHit;
 
     void Start () {
 
@@ -43,5 +44,21 @@ public class ParabolicMovement : Movement  {
 	void FixedUpdate()
 	{
 		cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, Quaternion.LookRotation(direction), 0.25f);
+	}
+
+
+	public override GameObject CurrentTarget {
+		get {
+			return target;
+		}
+		set {
+			if (target==null)
+				target = value;
+			else if (value==null)
+			{
+				target=value;
+				Start();
+			}
+		}
 	}
 }

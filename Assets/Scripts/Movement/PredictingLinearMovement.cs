@@ -34,4 +34,19 @@ public class PredictingLinearMovement : Movement {
 	{
 		cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, Quaternion.LookRotation(direction), 0.3f);
 	}
+
+	public override GameObject CurrentTarget {
+		get {
+			return target;
+		}
+		set {
+			if (target==null)
+				target = value;
+			else 
+			{
+				target=value;
+				Start();
+			}
+		}
+	}
 }

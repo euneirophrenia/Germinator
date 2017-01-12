@@ -5,14 +5,12 @@ public class WayPointFollow: Movement {
 
     public GameObject[] waypoints;
 
-    private GameObject next;
 	private int current = 0;
 	private Transform other;
 	private static string waypointtag = "WayPoint";
 
     void Start () {
-        next = waypoints[0];
-		other = next.transform;
+		other = waypoints[current].transform;
         direction = other.position - cachedTransform.position;
         direction = direction.normalized;
     }
@@ -26,18 +24,33 @@ public class WayPointFollow: Movement {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if (collision.CompareTag(waypointtag))
+		if (collision.CompareTag(waypointtag) && collision.gameObject == waypoints[current])
 		{
             current = int.Parse(collision.name);
 			if (current==waypoints.Length)
 			{
 				Destroy(this.gameObject);
+				//Raggiunto l'obiettivo
 				return;
 			}
-			next = waypoints[current];
-			other = next.transform;
+			other = waypoints[current].transform;
             direction = other.position - cachedTransform.position;
             direction = direction.normalized;
         }
+	}
+
+	public bool isObjectiveReached()
+	{
+		return current==waypoints.Length;
+	}
+
+	public override GameObject CurrentTarget {
+		get {
+			return waypoints[current];
+		}
+		set { 
+			waypoints[current] = value;
+			Start();
+		}
 	}
 }
