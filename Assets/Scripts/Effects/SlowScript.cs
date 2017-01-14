@@ -10,14 +10,13 @@ public class SlowScript : TimeBasedAbility {
     void Start()
     {
 		Movement movement=this.gameObject.GetComponent<Movement>();
-		if (movement!= null && effectiveness!=0)
+		if (movement!= null)
 			movement.speed /= effectiveness;
     }
 
     public override void UnApply()
     {
-		if (effectiveness!=0)
-        	this.gameObject.GetComponent<Movement>().speed *= effectiveness;
+		this.gameObject.GetComponent<Movement>().speed *= effectiveness;
         Destroy(this);
     }
 

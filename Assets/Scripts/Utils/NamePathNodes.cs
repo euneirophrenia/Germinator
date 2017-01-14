@@ -17,9 +17,12 @@ public class NamePathNodes : MonoBehaviour {
 	[Conditional("UNITY_EDITOR")]
 	void Update () 
 	{
-		for (int i=0; i<transform.childCount; i++)
+		if (!Application.isPlaying)
 		{
-			transform.GetChild(i).name=i.ToString();
+			for (int i=0; i<transform.childCount; i++)
+			{
+				transform.GetChild(i).name=i.ToString();
+			}
 		}
 	}
 }

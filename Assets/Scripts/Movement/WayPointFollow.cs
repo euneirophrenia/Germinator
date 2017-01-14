@@ -7,7 +7,7 @@ public class WayPointFollow: Movement {
 
 	private int current = 0;
 	private Transform other;
-	private static string waypointtag = "WayPoint";
+	private static readonly string waypointtag = "WayPoint";
 
     void Start () {
 		other = waypoints[current].transform;

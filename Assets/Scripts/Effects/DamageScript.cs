@@ -8,7 +8,7 @@ public class DamageScript : EffectScript {
 	{
 		Hittable h = this.gameObject.GetComponent<Hittable>();
 		if (h!=null)
-			h.addToHp(-(int)effectiveness);
+			h.AddToHp(-(int)effectiveness);
 		
         Destroy(this); 
 	}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System.Diagnostics;
 
 public class Hittable : MonoBehaviour {
 
@@ -11,7 +12,7 @@ public class Hittable : MonoBehaviour {
 	//public Dictionary<System.Type, float> sensibility = new Dictionary<System.Type, float>();
 	public SensibilityDictionary sensibility;
 
-    public void Proc(List<Effect> effects)
+	public void Proc(IEnumerable<Effect> effects)
     {
         foreach (Effect e in effects)
         {
@@ -24,11 +25,16 @@ public class Hittable : MonoBehaviour {
         //Debug.Log("Procced " + effect.effectScriptName + " for " + effect.effectiveness + " on " + this.gameObject.name);
 
         System.Type tipo = System.Type.GetType(effect.effectScriptName);
+
+		float effectiveness = effect.Effectiveness * sensibility[tipo];
+		if (effectiveness==0)
+			yield break;
+
         Component previous = this.gameObject.GetComponent(tipo);
 		if (previous == null)
             previous= this.gameObject.AddComponent(tipo);
        
-		float effectiveness = effect.Effectiveness * sensibility[tipo];
+
 
         EffectScript script = (EffectScript)previous;
 
@@ -38,17 +44,17 @@ public class Hittable : MonoBehaviour {
         yield return null;
     }
 
-    public void setEffectiveness(System.Type tipo, float value)
+    public void SetEffectiveness(System.Type tipo, float value)
     {
         sensibility[tipo] = value;
     }
 
-    public float getEffectiveness(System.Type t)
+    public float GetEffectiveness(System.Type t)
     {
 		return sensibility[t];
     }
 
-    public void addToHp(int value)
+    public void AddToHp(int value)
     {
         HP += value;
         if (HP<=0)
@@ -59,7 +65,7 @@ public class Hittable : MonoBehaviour {
     }
 		
 	//per popolare correttamente la mappa dall'editor di unity
-	//viene eseguito solo nell'editor, non davvero a runtime
+	[Conditional("UNITY_EDITOR")]
 	void OnValidate()
 	{
 		sensibility.Build();

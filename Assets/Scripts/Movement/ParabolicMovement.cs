@@ -7,7 +7,6 @@ public class ParabolicMovement : Movement  {
 	public float gravity = 10;
 
 	private float velocityY;
-    private float distance;
 	private float timeBeforeHit;
 
 	private Transform other;
@@ -20,7 +19,7 @@ public class ParabolicMovement : Movement  {
         other = target.transform;
         otherPreviousPosition = other.position;
 		this.direction = other.position - cachedTransform.position;
-        distance = direction.magnitude;
+        float distance = direction.magnitude;
         timeBeforeHit = distance / speed;
         this.drift = direction / timeBeforeHit;
 
@@ -54,7 +53,7 @@ public class ParabolicMovement : Movement  {
 		set {
 			if (target==null)
 				target = value;
-			else if (value==null)
+			else
 			{
 				target=value;
 				Start();

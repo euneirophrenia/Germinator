@@ -4,10 +4,6 @@ using System;
 using System.Linq;
 
 //Questa classe è un dizionario che si può modificare da unity
-//Unity a default non mostra dizionari a meno di scriversi dei CustomEditor
-//Strada che pure ho tentato ma con scarso successo, nel senso che
-//si sarebbe potuto ottenere qualcosa per classi concrete, non generiche
-//allora ho deciso che tanto valeva semplificare e far così.
 
 [Serializable]
 public class SensibilityDictionary 
@@ -42,6 +38,7 @@ public class SensibilityDictionary
 			}
 			catch (Exception) {
 				//Debug.LogError("No such type: "+e.type);
+				//probabilmente si sta ancora digitando il nome
 			}
 		}
 

@@ -14,7 +14,7 @@ public class DOTScript : TimeBasedAbility {
 
 	public override void Apply()
 	{
-		hittable.addToHp(-(int)effectiveness);
+		hittable.AddToHp(-(int)effectiveness);
 	}
 
 }
