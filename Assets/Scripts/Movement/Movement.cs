@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public abstract class Movement : MonoBehaviour {
 
@@ -13,7 +12,7 @@ public abstract class Movement : MonoBehaviour {
 		cachedTransform = this.transform;
 	}
 
-	public Vector3 Direction
+	public virtual Vector3 Direction
 	{
 		get {
 			return direction;

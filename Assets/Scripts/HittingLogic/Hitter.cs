@@ -25,7 +25,6 @@ public abstract class Hitter : MonoBehaviour {
 		other.Proc(effects);
           
         HandleHit(other); //per cose tipo consentire hit consecutivi  
-
         if (destroy)
         {
 			Destroy(this.gameObject);

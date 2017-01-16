@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-[Debuff]
+﻿[Debuff]
 public class DOTScript : TimeBasedAbility {
 
 	private Hittable hittable;
@@ -12,9 +8,10 @@ public class DOTScript : TimeBasedAbility {
 		hittable = this.gameObject.GetComponent<Hittable>(); //solo per efficienza e non dover ricercare a ogni tick
 	}
 
-	public override void Apply()
+	public override bool Apply()
 	{
 		hittable.AddToHp(-(int)effectiveness);
+        return true;
 	}
 
 }

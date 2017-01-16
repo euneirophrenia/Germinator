@@ -8,15 +8,16 @@ public abstract class TimeBasedAbility : EffectScript {
 
     public int remainingTicks = int.MaxValue;
    
-   
 	// Update is called once per frame
-	void Update () {
-		
+	public virtual void Update () {
+
         if (activeCoolDown<=0)
         {
-            this.Apply();
-            activeCoolDown = cooldown;
-            remainingTicks--;
+            if (this.Apply())
+            {
+                activeCoolDown = cooldown;
+                remainingTicks--;
+            }
 			return;
         }
         else

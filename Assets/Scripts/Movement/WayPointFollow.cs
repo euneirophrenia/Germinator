@@ -3,16 +3,20 @@ using System.Collections.Generic;
 
 public class WayPointFollow: Movement {
 
-    public GameObject[] waypoints;
-
-	private int current = 0;
+    public GameObject next;
 	private Transform other;
-	private static readonly string waypointtag = "WayPoint";
 
     void Start () {
-		other = waypoints[current].transform;
-        direction = other.position - cachedTransform.position;
-        direction = direction.normalized;
+		if (next!=null)
+		{
+			other = next.transform;
+	        direction = other.position - cachedTransform.position;
+	        direction = direction.normalized;
+		}
+		else {
+			Destroy(this.gameObject);
+			//obiettivo raggiunto
+		}
     }
 	
 
@@ -22,7 +26,7 @@ public class WayPointFollow: Movement {
         cachedTransform.LookAt(other.transform);
     }
 
-	void OnTriggerEnter(Collider collision)
+	/*void OnTriggerEnter(Collider collision)
 	{
 		if (collision.CompareTag(waypointtag) && collision.gameObject == waypoints[current])
 		{
@@ -37,19 +41,19 @@ public class WayPointFollow: Movement {
             direction = other.position - cachedTransform.position;
             direction = direction.normalized;
         }
-	}
+	}*/
 
 	public bool isObjectiveReached()
 	{
-		return current==waypoints.Length;
+		return next==null;
 	}
 
 	public override GameObject CurrentTarget {
 		get {
-			return waypoints[current];
+			return next;
 		}
 		set { 
-			waypoints[current] = value;
+			next= value;
 			Start();
 		}
 	}

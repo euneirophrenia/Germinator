@@ -21,6 +21,12 @@ public class Upgradable : MonoBehaviour {
 
     public void Build(TowerBlueprint blueprint)
     {
-        //TODO: logica di sostituzione dei pezzi dell'upgrade
-    }
+		Destroy(this.gameObject);
+
+		//TODO: save params
+
+		Instantiate(blueprint.turretPrefab, this.transform.position, this.transform.rotation);
+
+		//TODO: set params
+	}
 }
