@@ -9,6 +9,15 @@ public class Spawn : MonoBehaviour {
     public float deltaTime;
 
     private float countdown=0;
+    private NavMeshPath cached;
+
+    public void Start()
+    {
+        cached = new NavMeshPath();
+        NavMeshAgent agent = this.GetComponent<NavMeshAgent>();
+        agent.CalculatePath(target.transform.position, cached);
+        Destroy(agent); 
+    }
 
 
 	void Update () {
@@ -16,7 +25,15 @@ public class Spawn : MonoBehaviour {
         if (countdown <= 0 && howMany>0)
         {
             GameObject created =Instantiate(what, this.transform.position, Quaternion.identity);
-            created.GetComponent<NavMeshAgent>().SetDestination(target.transform.position);
+            NavMeshAgent agent = created.GetComponent<NavMeshAgent>();
+            if (cached.status != NavMeshPathStatus.PathComplete)
+            {
+                agent.SetDestination(target.transform.position);
+            }
+            else
+            {
+                agent.SetPath(cached);
+            }
             countdown = deltaTime;
             howMany--;
             return;
