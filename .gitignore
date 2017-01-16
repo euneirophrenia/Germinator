@@ -9,3 +9,4 @@ Library/
 *.userprefs
 obj/
 Assets/Personal.meta
+*.suo
