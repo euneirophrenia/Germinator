@@ -28,7 +28,7 @@ public class Spawn : MonoBehaviour {
             NavMeshAgent agent = created.GetComponent<NavMeshAgent>();
             if (cached.status != NavMeshPathStatus.PathComplete)
             {
-                agent.SetDestination(target.transform.position);
+                agent.SetDestination(target.transform.position); 
             }
             else
             {

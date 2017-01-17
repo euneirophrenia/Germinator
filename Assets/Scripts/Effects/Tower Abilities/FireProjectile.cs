@@ -1,33 +1,25 @@
 ﻿using UnityEngine;
-using System.Diagnostics;
 
-public class FireProjectile : TimeBasedAbility
+public class FireProjectile : TowerAbility
 {
     public GameObject projectile;
-    public float radiusOfInfluence;
+	private GameObject bullet;
 
-    public override bool Apply()
+    public override bool Do()
     {
         GameObject target = GetTarget();
         if (target!=null)
         {
-            GameObject bullet = Instantiate(projectile, this.transform.position,Quaternion.identity);
+            bullet = Instantiate(projectile, this.transform.position,Quaternion.identity);
             bullet.GetComponent<Movement>().CurrentTarget = target;
             return true;
         }
         return false;
-    }
-
-    [Conditional("UNITY_EDITOR")]
-	void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(1, 1, 0, 0.75F);
-        Gizmos.DrawSphere(transform.position, radiusOfInfluence);
-    }
+	}
 
     protected virtual GameObject GetTarget()
     {
-        Collider[] gos = Physics.OverlapSphere(this.transform.position, radiusOfInfluence);
+        Collider[] gos = Physics.OverlapSphere(this.transform.position, radius);
         for (int i = 0; i < gos.Length; i++)
         {
             if (gos[i].gameObject.GetComponent<Hittable>()!=null)

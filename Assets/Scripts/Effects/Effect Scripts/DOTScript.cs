@@ -8,10 +8,9 @@ public class DOTScript : TimeBasedAbility {
 		hittable = this.gameObject.GetComponent<Hittable>(); //solo per efficienza e non dover ricercare a ogni tick
 	}
 
-	public override bool Apply()
+	public override void Apply()
 	{
 		hittable.AddToHp(-(int)effectiveness);
-        return true;
 	}
 
 }

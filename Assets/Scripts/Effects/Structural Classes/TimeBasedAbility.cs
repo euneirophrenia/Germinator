@@ -13,11 +13,9 @@ public abstract class TimeBasedAbility : EffectScript {
 
         if (activeCoolDown<=0)
         {
-            if (this.Apply())
-            {
-                activeCoolDown = cooldown;
-                remainingTicks--;
-            }
+			this.Apply();
+            activeCoolDown = cooldown;
+            remainingTicks--;
 			return;
         }
         else
