@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class TimeBasedAbility : EffectScript {
+public abstract class TimeBasedEffect : EffectScript {
 
     public float cooldown;
     public float activeCoolDown = 0;

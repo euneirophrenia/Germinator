@@ -1,5 +1,5 @@
 ﻿[Debuff]
-public class DOTScript : TimeBasedAbility {
+public class DOTScript : TimeBasedEffect {
 
 	private Hittable hittable;
 

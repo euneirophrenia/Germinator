@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 
 [Debuff]
-public class KnockBackScript : TimeBasedAbility {
+public class KnockBackScript : TimeBasedEffect {
 
 	private new Rigidbody rigidbody;
 	private Vector3 force;

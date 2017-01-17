@@ -19,7 +19,7 @@ public class EffectEditor : Editor
 	void OnEnable()
 	{
 		e = target as Effect;
-		referenced = Assembly.GetAssembly(typeof(TimeBasedAbility));
+		referenced = Assembly.GetAssembly(typeof(TimeBasedEffect));
 		e.effectScriptName = e.GetType().Name+"Script";
 
 		effect = new GUIContent("Effetto", "Tanto maggiore, tanto più forte");
@@ -37,7 +37,7 @@ public class EffectEditor : Editor
 		e.Effectiveness = EditorGUILayout.FloatField(effect, e.Effectiveness);
 		EditorGUILayout.Separator();
 
-		if (!String.IsNullOrEmpty(e.effectScriptName) && typeof(TimeBasedAbility).IsAssignableFrom(referenced.GetType(e.effectScriptName)))
+		if (!String.IsNullOrEmpty(e.effectScriptName) && typeof(TimeBasedEffect).IsAssignableFrom(referenced.GetType(e.effectScriptName)))
 		{
 			e.Cooldown = EditorGUILayout.FloatField("Cooldown", e.Cooldown);
 			e.Ticks = EditorGUILayout.IntField("Ticks", e.Ticks);

@@ -1,7 +1,7 @@
 ﻿using UnityEngine.AI;
 
 [Debuff]
-public class SlowScript : TimeBasedAbility {
+public class SlowScript : TimeBasedEffect {
 
     //essenzialmente eredita solo per usufruire dei servizi e non doverli duplicare 
     private NavMeshAgent agent;

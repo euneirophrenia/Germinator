@@ -10,3 +10,5 @@ Library/
 obj/
 Assets/Personal.meta
 *.suo
+Assets/Scenes/*Test.unity
+Assets/Scenes/*test.unity
