@@ -21,15 +21,15 @@ public class Hittable : MonoBehaviour {
 	
 	public virtual IEnumerator Proc(Effect effect)
     {
-        //Debug.Log("Procced " + effect.effectScriptName + " for " + effect.effectiveness + " on " + this.gameObject.name);
-
+        //UnityEngine.Debug.Log("Procced on " +this.gameObject.name);
+        
         System.Type tipo = System.Type.GetType(effect.effectScriptName);
 
 		float effectiveness = effect.Effectiveness * sensibility[tipo];
 		if (effectiveness==0)
 			yield break;
 
-        Component previous = this.gameObject.GetComponent(tipo);
+        Component previous = this.GetComponent(tipo);
 		if (previous == null)
             previous= this.gameObject.AddComponent(tipo);
        

@@ -3,7 +3,7 @@
 public abstract class Ability : MonoBehaviour {
 
 	public float timeBetweenActivations;
-	private float activeCoolDown=0;
+	protected float activeCoolDown=0;
 
 
 	/// <summary>

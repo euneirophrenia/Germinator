@@ -19,7 +19,7 @@ public class AOEHitter : Hitter {
 		destroy=true;
 	}
 
-	[Conditional("UNITY_EDITOR")]
+    [Conditional("UNITY_EDITOR")]
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = new Color(1, 1, 0, 0.75F);

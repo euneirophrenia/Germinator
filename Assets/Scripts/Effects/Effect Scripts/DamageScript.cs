@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 public class DamageScript : EffectScript {
 
     void Start () 
 	{
-		Hittable h = this.gameObject.GetComponent<Hittable>();
-		if (h!=null)
-			h.AddToHp(-(int)effectiveness);
+		Hittable[] h = this.GetComponentsInChildren<Hittable>();
+		if (h.Length!=0)
+			h[h.Length-1].AddToHp(-(int)effectiveness);
 		
         Destroy(this); 
 	}

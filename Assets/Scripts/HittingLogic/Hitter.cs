@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
 
 public abstract class Hitter : MonoBehaviour {
 
@@ -27,11 +26,12 @@ public abstract class Hitter : MonoBehaviour {
         HandleHit(other); //per cose tipo consentire hit consecutivi  
         if (destroy)
         {
-			Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }  
     }
 
-	protected bool CanHit(Hittable h)
+	protected virtual bool CanHit(Hittable h)
 	{
 		foreach(string s in hits)
 		{
