@@ -6,11 +6,17 @@
 public class MultiHitter : Hitter { 
 
     public int maxHits = 5;
+    public int hitsLeft;
 
 	public override void HandleHit(Hittable hit)
     {
-        maxHits--;
-        destroy = maxHits == 0;
+        hitsLeft--;
+        destroy = hitsLeft == 0;
+    }
+
+    public void OnEnable()
+    {
+        hitsLeft = maxHits;
     }
 
 }

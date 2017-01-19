@@ -8,8 +8,9 @@ public class KnockBackScript : TimeBasedEffect {
 	private Vector3 force;
     private NavMeshAgent agent;
 
-	void Start () 
+	public override void Start () 
 	{
+        base.Start();
 		rigidbody = this.GetComponent<Rigidbody>();
         agent=this.GetComponent<NavMeshAgent>();
         agent.Stop();
@@ -21,7 +22,7 @@ public class KnockBackScript : TimeBasedEffect {
 	{
 		this.rigidbody.AddForce(-force, ForceMode.Impulse);
         agent.Resume();
-		Destroy(this);
+        base.UnApply();
 	}
 		
 }

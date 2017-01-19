@@ -6,8 +6,9 @@ public class SlowScript : TimeBasedEffect {
     //essenzialmente eredita solo per usufruire dei servizi e non doverli duplicare 
     private NavMeshAgent agent;
 
-    void Start()
+    public override void Start()
     {
+        base.Start();
 		agent=this.gameObject.GetComponent<NavMeshAgent>();
 		if (agent!= null)
 			agent.speed /= effectiveness;
@@ -16,7 +17,7 @@ public class SlowScript : TimeBasedEffect {
     public override void UnApply()
     {
 		agent.speed *= effectiveness;
-        Destroy(this);
+        base.UnApply();
     }
 
 }

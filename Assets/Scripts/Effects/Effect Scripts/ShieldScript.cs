@@ -8,7 +8,7 @@ public class ShieldScript : MonoBehaviour {
     private float previousEffectiveness;
 
 	// Use this for initialization
-	void Start () {
+	public void Start () {
         parent = this.GetComponentInParent<Hittable>();
         previousEffectiveness = parent.GetEffectiveness(typeof(DamageScript));
         parent.SetEffectiveness(typeof(DamageScript), 0);

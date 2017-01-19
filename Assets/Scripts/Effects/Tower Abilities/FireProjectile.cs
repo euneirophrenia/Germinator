@@ -7,12 +7,12 @@ public class FireProjectile : TowerAbility
 
     private Collider[] gos;
 
-    private PrefabPool bulletPool;
+    private PoolManager pools;
     private Transform cached;
 
     public void Start()
     {
-        bulletPool = new PrefabPool(projectile, 3, dynamic : false); 
+        pools = PoolManager.SharedInstance(); 
         cached = this.transform;
     }
 
@@ -22,7 +22,7 @@ public class FireProjectile : TowerAbility
         if (target!=null)
         {
             //bullet = Instantiate(projectile, this.transform.position,Quaternion.identity);
-            bullet = bulletPool.Get();
+            bullet = pools.GetFromPool(projectile);
             bullet.transform.position = cached.position;
             bullet.GetComponent<Movement>().CurrentTarget = target;
             return true;

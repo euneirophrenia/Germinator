@@ -2,13 +2,11 @@
 
 public class DamageScript : EffectScript {
 
-    void Start () 
+    public override void Start () 
 	{
-		Hittable[] h = this.GetComponentsInChildren<Hittable>();
-		if (h.Length!=0)
-			h[h.Length-1].AddToHp(-(int)effectiveness);
-		
-        Destroy(this); 
+        base.Start();
+		target.AddToHp(-(int)effectiveness);
+        base.UnApply();
 	}
 
 	//Per proccare istanze multiple di danno sullo stesso proiettile 
