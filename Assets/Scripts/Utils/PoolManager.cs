@@ -7,7 +7,7 @@ public enum PoolOptions
 {
     /// <summary>
     /// Il pool nascerà con il numero specificato di oggetti, e non andrà oltre a quel numero.
-    /// Se automanaged, nasce come array vuoto (tutti i valori null)
+    /// Se automanaged, nasce come array vuoto (tutti i valori null).
     /// E' il più efficiente.
     /// </summary>
     Static,
@@ -42,7 +42,13 @@ public class PoolManager
         this.releaseMap = new Dictionary<int, PrefabPool>();
     }
 
-    public GameObject GetFromPool(GameObject prefab)
+	/// <summary>
+	/// Gets the instance of the prefab from pool.
+	/// </summary>
+	/// <returns>The Instance from pool.</returns>
+	/// <param name="prefab">Prefab.</param>
+	/// <param name="activate">If set to <c>true</c> the object is returned active.</param>
+	public GameObject GetFromPool(GameObject prefab, bool activate=true)
     {
         if (!pools.ContainsKey(prefab))
         {
@@ -53,7 +59,7 @@ public class PoolManager
             CreatePool(prefab, 3); //test, massimo 3 oggetti, a default static e automanaged
         }
 
-        return pools[prefab].Get();
+        return pools[prefab].Get(activate);
     }
 
     public void CreatePool(GameObject prefab, int initialSize, PoolOptions opt=PoolOptions.Static, bool autoManaged=true)
@@ -101,9 +107,9 @@ public class PoolManager
             this.manager = manager;
             this.prefab = prefab;
         }
+			
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public abstract GameObject Get();
+		public abstract GameObject Get(bool activate);
 
         public virtual void Release(GameObject g)
         {
@@ -145,13 +151,14 @@ public class PoolManager
                 actualSize = 0;
         }
 
-        public override GameObject Get()
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public override GameObject Get(bool activate)
         {
             foreach (GameObject g in pool)
             {
                 if (g && !g.activeInHierarchy)
                 {
-                    g.SetActive(true);
+                    g.SetActive(activate);
                     return g;
                 }
             }
@@ -187,13 +194,14 @@ public class PoolManager
             }
         }
 
-        public override GameObject Get()
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public override GameObject Get(bool activate)
         {
             foreach (GameObject g in pool)
             {
                 if (!g.activeInHierarchy)
                 {
-                    g.SetActive(true);
+                    g.SetActive(activate);
                     return g;
                 }
             }

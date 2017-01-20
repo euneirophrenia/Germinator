@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Diagnostics;
 using System;
-
+using AsyncCoroutines;
 
 public class Hittable : MonoBehaviour {
 
@@ -20,7 +20,7 @@ public class Hittable : MonoBehaviour {
     {
         foreach (Effect e in effects)
         {
-            StartCoroutine(Proc(e));
+            this.StartCoroutineAsync(Proc(e));
         }
     }
 	
@@ -35,12 +35,12 @@ public class Hittable : MonoBehaviour {
 
         EffectScript previous = this.FindActive(tipo);
 
+		yield return Ninja.JumpToUnity;
         if (previous == null)
         {
             previous = (EffectScript)this.gameObject.AddComponent(tipo);
             this.currentlyProcced.Add(previous);
         }
-
         previous.RefreshEffect(effect, effectiveness);
 
         yield return null;
