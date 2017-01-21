@@ -239,7 +239,7 @@ namespace AsyncCoroutines
             try
             {
                 // run next part of the user routine;
-                var result = _innerRoutine.MoveNext();
+                bool result = _innerRoutine.MoveNext();
 
                 if (result)
                 {

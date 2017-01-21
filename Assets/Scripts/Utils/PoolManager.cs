@@ -28,6 +28,8 @@ public class PoolManager
     private Dictionary<GameObject, PrefabPool> pools;
     private Dictionary<int, PrefabPool> releaseMap;
 
+	private static readonly Vector3 zero = new Vector3(0,0,0);
+
     public static PoolManager SharedInstance()
     {
         if (instance == null)
@@ -48,7 +50,7 @@ public class PoolManager
 	/// <returns>The Instance from pool.</returns>
 	/// <param name="prefab">Prefab.</param>
 	/// <param name="activate">If set to <c>true</c> the object is returned active.</param>
-	public GameObject GetFromPool(GameObject prefab, bool activate=true)
+	public GameObject GetFromPool(GameObject prefab, Vector3 position = default(Vector3), Quaternion rotation = default(Quaternion), bool activate=true)
     {
         if (!pools.ContainsKey(prefab))
         {
@@ -59,7 +61,7 @@ public class PoolManager
             CreatePool(prefab, 3); //test, massimo 3 oggetti, a default static e automanaged
         }
 
-        return pools[prefab].Get(activate);
+        return pools[prefab].Get(position, rotation, activate);
     }
 
     public void CreatePool(GameObject prefab, int initialSize, PoolOptions opt=PoolOptions.Static, bool autoManaged=true)
@@ -109,14 +111,14 @@ public class PoolManager
         }
 			
 
-		public abstract GameObject Get(bool activate);
+		public abstract GameObject Get(Vector3 position, Quaternion rotation, bool activate);
 
         public virtual void Release(GameObject g)
         {
-            if (pool.Contains(g))       //se ci fosse un modo per marcare gli oggetti e sapere one-shot se sono nel pool o meno sarebbe bello
+            if (pool.Contains(g))
                 g.SetActive(false);     //se nel pool
             else
-                GameObject.Destroy(g);  //se non nel pool (es: creato quando il pool era tutto usato e il pool è statico
+				GameObject.Destroy(g);  //se non nel pool (es: creato quando il pool era tutto usato e il pool è statico)
 
         }
 
@@ -127,6 +129,7 @@ public class PoolManager
 
     }
 
+	#region Static
     private class StaticPool : PrefabPool
     {
         private int actualSize;
@@ -148,33 +151,47 @@ public class PoolManager
                 actualSize = initialSize;
             }
             else
+			{
                 actualSize = 0;
+			}
         }
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override GameObject Get(bool activate)
-        {
+		public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
+		{
             foreach (GameObject g in pool)
             {
                 if (g && !g.activeInHierarchy)
                 {
+					g.transform.position=position;
+					g.transform.rotation = rotation;
                     g.SetActive(activate);
                     return g;
                 }
-            }
+            } 
 
-            GameObject created = GameObject.Instantiate(prefab);
-            if (actualSize<maxSize)
-            {
-                pool[actualSize] = created;
-                actualSize++;
-                manager.SetPoolForId(created.GetInstanceID(), this);
-            }
+			GameObject created = GameObject.Instantiate(prefab);
+			created.transform.position=position;
+			created.transform.rotation=rotation;
+			created.SetActive(activate);
+			if (actualSize<maxSize)
+			{
+				pool[actualSize] = created;
+				actualSize++;
+				manager.SetPoolForId(created.GetInstanceID(), this);
+			}
 
-            return created;
+			return created;
         }
+			
+		public override void Release (GameObject g)
+		{
+			base.Release (g);
+		}
     }
+	#endregion
 
+	#region Dynamic
     private class DynamicPool : PrefabPool
     {
 
@@ -195,23 +212,29 @@ public class PoolManager
         }
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override GameObject Get(bool activate)
+		public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
         {
             foreach (GameObject g in pool)
             {
                 if (!g.activeInHierarchy)
                 {
+					g.transform.position=position;
+					g.transform.rotation=rotation;
                     g.SetActive(activate);
                     return g;
                 }
             }
 
             GameObject created = GameObject.Instantiate(prefab);
+			created.transform.position=position;
+			created.transform.rotation=rotation;
+			created.SetActive(activate);
             pool.Add(created);
             manager.SetPoolForId(created.GetInstanceID(), this);
 
             return created;
         }
     }
+	#endregion
     #endregion
 }

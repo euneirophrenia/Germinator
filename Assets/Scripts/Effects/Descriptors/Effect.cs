@@ -14,7 +14,7 @@
  * Per effetti come lo slow, che hanno una durata, anche cooldown e ticks, e l'effetto durerà cooldown*ticks secondi.
  * Per effetti come un cleanse, che sono 1-shot e non hanno un valore, basta definire lo scriptName.
  * */
-
+using System.Diagnostics;
 using System;
 using UnityEngine;
 
@@ -33,6 +33,8 @@ public abstract class Effect : ScriptableObject //non tutti useranno tutto
 	[SerializeField]
 	protected string scriptName; //il nome dello script corrispondente
 
+	private Type tipo;
+
 	protected Effect()
 	{
 		this.scriptName=this.GetType().Name+"Script";
@@ -47,6 +49,12 @@ public abstract class Effect : ScriptableObject //non tutti useranno tutto
 			scriptName = value;
 		}
 	} 
+
+	public virtual Type EffectType {
+		get {
+			return tipo;
+		}
+	}
 
     public virtual float Effectiveness { 
 		get {
@@ -71,6 +79,19 @@ public abstract class Effect : ScriptableObject //non tutti useranno tutto
 		} 
 		set{
 			cooldown=value;
+		}
+	}
+
+	[Conditional("UNITY_EDITOR")]
+	public void OnValidate()
+	{
+		try
+		{
+			tipo = Type.GetType(this.scriptName);
+		}
+		catch (Exception)
+		{
+			
 		}
 	}
     

@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class DontTouchMe : MonoBehaviour {
 
+	private PoolManager pool;
+
+	void Start()
+	{
+		pool=PoolManager.SharedInstance();
+	}
+
     void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+		pool.ReleaseToPool(other.gameObject);
     }
 }

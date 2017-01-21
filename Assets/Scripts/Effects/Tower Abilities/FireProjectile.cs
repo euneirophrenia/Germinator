@@ -22,8 +22,7 @@ public class FireProjectile : TowerAbility
         if (target!=null)
         {
             //bullet = Instantiate(projectile, this.transform.position,Quaternion.identity);
-            bullet = pools.GetFromPool(projectile);
-            bullet.transform.position = cached.position;
+			bullet = pools.GetFromPool(projectile, cached.position);
             bullet.GetComponent<Movement>().CurrentTarget = target;
             return true;
         }

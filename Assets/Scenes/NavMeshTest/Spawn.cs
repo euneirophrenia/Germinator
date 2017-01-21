@@ -10,6 +10,7 @@ public class Spawn : MonoBehaviour {
 
     private float countdown=0;
     private NavMeshPath cached;
+	private PoolManager pool;
 
     public void Start()
     {
@@ -17,6 +18,9 @@ public class Spawn : MonoBehaviour {
         NavMeshAgent agent = this.GetComponent<NavMeshAgent>();
         agent.CalculatePath(target.transform.position, cached);
         Destroy(agent); 
+
+		pool = PoolManager.SharedInstance();
+		pool.CreatePool(what, 6, PoolOptions.Static);
     }
 
 
@@ -24,7 +28,8 @@ public class Spawn : MonoBehaviour {
 
         if (countdown <= 0 && howMany>0)
         {
-            GameObject created =Instantiate(what, this.transform.position, Quaternion.identity);
+			GameObject created = pool.GetFromPool(what,this.transform.position);
+
             NavMeshAgent agent = created.GetComponent<NavMeshAgent>();
             if (cached.status != NavMeshPathStatus.PathComplete)
             {
@@ -34,6 +39,7 @@ public class Spawn : MonoBehaviour {
             {
                 agent.SetPath(cached);
             }
+
             countdown = deltaTime;
             howMany--;
             return;

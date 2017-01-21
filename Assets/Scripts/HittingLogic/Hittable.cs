@@ -24,10 +24,10 @@ public class Hittable : MonoBehaviour {
         }
     }
 	
-	
     public virtual IEnumerator Proc(Effect effect)
     {   
-        Type tipo = Type.GetType(effect.effectScriptName);
+        //Type tipo = Type.GetType(effect.effectScriptName);
+		Type tipo = effect.EffectType;
 
 		float effectiveness = effect.Effectiveness * sensibility[tipo];
 		if (effectiveness==0)
