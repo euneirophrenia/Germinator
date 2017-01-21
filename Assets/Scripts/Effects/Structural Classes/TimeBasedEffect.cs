@@ -30,10 +30,10 @@ public abstract class TimeBasedEffect : EffectScript {
     public override void RefreshEffect(Effect e, float actualEffectiveness)
     {
         effectiveness = actualEffectiveness;
-        int attempt = remainingTicks + e.Ticks;
-        remainingTicks = (attempt > 0 ? attempt : e.Ticks);
+        remainingTicks = (e.Ticks <= 0 ? int.MaxValue : e.Ticks);
         cooldown = e.Cooldown;
         activeCoolDown = 0; //nuovo tick al refresh, mi pare sensato
+        this.enabled = true;
 
     }
 }

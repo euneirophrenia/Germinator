@@ -27,8 +27,9 @@ public class PoolManager
 
     private Dictionary<GameObject, PrefabPool> pools;
     private Dictionary<int, PrefabPool> releaseMap;
-
+    private PrefabPool releasePool;
 	private static readonly Vector3 zero = new Vector3(0,0,0);
+
 
     public static PoolManager SharedInstance()
     {
@@ -50,6 +51,8 @@ public class PoolManager
 	/// <returns>The Instance from pool.</returns>
 	/// <param name="prefab">Prefab.</param>
 	/// <param name="activate">If set to <c>true</c> the object is returned active.</param>
+    /// <param name="position">The position to which spawn the object.</param>
+    /// <param name="rotation">The rotation when spawned.</param>
 	public GameObject GetFromPool(GameObject prefab, Vector3 position = default(Vector3), Quaternion rotation = default(Quaternion), bool activate=true)
     {
         if (!pools.ContainsKey(prefab))
@@ -78,7 +81,10 @@ public class PoolManager
 
     public void ReleaseToPool(GameObject go)
     {
-        releaseMap[go.GetInstanceID()].Release(go);
+        if (releaseMap.TryGetValue(go.GetInstanceID(), out releasePool))
+            releasePool.Release(go);
+        else
+            GameObject.Destroy(go);
     }
 
     #region Prefab Pool
@@ -115,11 +121,7 @@ public class PoolManager
 
         public virtual void Release(GameObject g)
         {
-            if (pool.Contains(g))
-                g.SetActive(false);     //se nel pool
-            else
-				GameObject.Destroy(g);  //se non nel pool (es: creato quando il pool era tutto usato e il pool è statico)
-
+           g.SetActive(false);     
         }
 
         public void Clear()

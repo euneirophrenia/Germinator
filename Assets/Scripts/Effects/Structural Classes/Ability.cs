@@ -23,8 +23,11 @@ public abstract class Ability : MonoBehaviour {
 		{
 			activeCoolDown -= Time.deltaTime;
 		}
-
-
 	}
+
+    public void OnDisable()
+    {
+        activeCoolDown = timeBetweenActivations;
+    }
 
 }

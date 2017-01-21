@@ -1,17 +1,31 @@
-﻿using UnityEngine.AI;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 [Debuff]
 public class SlowScript : TimeBasedEffect {
 
-    //essenzialmente eredita solo per usufruire dei servizi e non doverli duplicare 
     private NavMeshAgent agent;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
 		agent=this.gameObject.GetComponent<NavMeshAgent>();
-		if (agent!= null)
-			agent.speed /= effectiveness;
+        effectiveness = 1;
+    }
+
+    public void OnDisable()
+    {
+        effectiveness = 1;
+    }
+
+    public override void RefreshEffect(Effect e, float actualEffectiveness)
+    {
+        if (actualEffectiveness > effectiveness)
+        {
+            agent.speed *= effectiveness;
+            agent.speed /= actualEffectiveness;
+        }
+        base.RefreshEffect(e, actualEffectiveness);
+
     }
 
     public override void UnApply()

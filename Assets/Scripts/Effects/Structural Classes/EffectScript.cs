@@ -5,24 +5,25 @@ public abstract class EffectScript : MonoBehaviour {
 
     public float effectiveness;
     protected Hittable target;
+    private Hittable[] temp;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
-        Hittable[] temp = this.GetComponentsInChildren<Hittable>();
+        temp = this.GetComponentsInChildren<Hittable>();
         target = temp[temp.Length - 1];
-        
     }
 
     public virtual void RefreshEffect(Effect e, float actualEffectivenes)
     {
         effectiveness = actualEffectivenes;
+        this.enabled = true;
     }
 
     public virtual void Apply() { } 
 	public virtual void UnApply() 
 	{
-        target.UnApply(this);
-		Destroy(this);
+        //Destroy(this);
+        this.enabled = false;
 	} 
 
 }

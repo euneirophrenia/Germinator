@@ -17,7 +17,7 @@ public class CreateShield : Ability {
         shieldInstance = Instantiate(shieldPrefab, this.transform);
         shieldInstance.transform.localPosition = Vector3.zero;
         shieldInstance.transform.localScale = scale;
-        shieldInstance.GetComponent<Hittable>().maxHP = maxHP;
+        shieldInstance.GetComponent<Hittable>().HP = maxHP;
         return true;
     }
 

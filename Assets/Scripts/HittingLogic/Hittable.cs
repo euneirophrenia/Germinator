@@ -7,13 +7,16 @@ using AsyncCoroutines;
 
 public class Hittable : MonoBehaviour {
 
-    public int maxHP = 100;
-    public int currentHP;
+    public int HP=100;
+
+    [HideInInspector, SerializeField]
+    private int maxHP; 
+
     public SensibilityDictionary sensibility;
 
     /*Oltre a farmi comodo per resettare oggetti in pool, sorprendentemente migliora l'efficienza
      * visto che si risparmiano le getComponent per controllare se è presente o no un effetto */
-    private List<EffectScript> currentlyProcced;
+    private List<EffectScript> effectsCache;
 
     #region PROC LOGIC
     public void Proc(IEnumerable<Effect> effects)
@@ -39,17 +42,9 @@ public class Hittable : MonoBehaviour {
         if (previous == null)
         {
             previous = (EffectScript)this.gameObject.AddComponent(tipo);
-            this.currentlyProcced.Add(previous);
+            this.effectsCache.Add(previous);
         }
         previous.RefreshEffect(effect, effectiveness);
-
-        yield return null;
-    }
-
-
-    public void UnApply(EffectScript ef)
-    {
-        this.currentlyProcced.Remove(ef);
     }
     #endregion
 
@@ -66,8 +61,8 @@ public class Hittable : MonoBehaviour {
 
     public void AddToHp(int value)
     {
-        currentHP += value;
-        if (currentHP<=0)
+        HP += value;
+        if (HP<=0)
         {
             //animazioncina
             Destroy(this.gameObject);
@@ -77,7 +72,7 @@ public class Hittable : MonoBehaviour {
 
     private EffectScript FindActive(Type tipo)
     {
-        foreach (EffectScript e in this.currentlyProcced)
+        foreach (EffectScript e in this.effectsCache)
         {
             if (tipo.IsAssignableFrom(e.GetType()))
                 return e;
@@ -92,24 +87,24 @@ public class Hittable : MonoBehaviour {
 
     public void Start()
     {
-        this.currentlyProcced = new List<EffectScript>();
+        this.effectsCache = new List<EffectScript>();
     }
 
     public void OnEnable()
     {
-        this.currentHP = maxHP;
+        this.HP = maxHP;
+     
     }
 
     public void OnDisable()
     {
-        if (currentlyProcced == null)
+        if (effectsCache == null)
             return;
 
-       foreach (EffectScript e in this.currentlyProcced)
+       foreach (EffectScript e in this.effectsCache)
         {
             e.UnApply();
         }
-        currentlyProcced.Clear();
     }
 
     //per popolare correttamente la mappa dall'editor di unity
@@ -117,6 +112,7 @@ public class Hittable : MonoBehaviour {
 	void OnValidate()
 	{
 		sensibility.Build();
-	}
+        maxHP = HP;
+    }
     #endregion
 }

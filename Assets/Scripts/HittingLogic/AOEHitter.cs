@@ -7,17 +7,31 @@ public class AOEHitter : Hitter {
 
 	public override void HandleHit(Hittable hit)
 	{
-		Collider[] others = Physics.OverlapSphere(hit.transform.position, radius);
+        Collider[] others= Physics.OverlapSphere(hit.transform.position, radius);
 		foreach (Collider other in others)
 		{
-			Hittable h = other.GetComponent<Hittable>();
-			if (h!=null && h!=hit && CanHit(h))
-			{
-				h.Proc(effects);
-			}
+            if (CanHit(other))
+            {
+                Hittable h = other.GetComponent<Hittable>();
+                if (h != null && h != hit)
+                {
+                    h.Proc(effects);
+                }
+            }
 		}
 		destroy=true;
 	}
+
+    private bool CanHit(Collider c)
+    {
+        foreach (string s in hits)
+        {
+            if (c.CompareTag(s))
+                return true;
+        }
+
+        return false;
+    }
 
     [Conditional("UNITY_EDITOR")]
 	void OnDrawGizmosSelected()

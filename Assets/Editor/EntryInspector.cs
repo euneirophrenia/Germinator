@@ -15,8 +15,8 @@ public class EntryInspector : PropertyDrawer
 	private int _choice=0;
 
 	private string[] choices = (from x in AppDomain.CurrentDomain.GetAssemblies().SelectMany(s=>s.GetTypes())
-			where typeof(EffectScript).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
-		select x.Name).ToArray();
+			                         where typeof(EffectScript).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
+		                                 select x.Name).ToArray();
 
 	public int choiceIndex {
 		set {

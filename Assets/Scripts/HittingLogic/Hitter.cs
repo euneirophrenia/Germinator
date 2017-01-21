@@ -27,7 +27,7 @@ public abstract class Hitter : MonoBehaviour {
         if (destroy)
         {
             //Destroy(this.gameObject);
-            this.gameObject.SetActive(false);
+            this.gameObject.Release();
         }  
     }
 

@@ -8,20 +8,26 @@ public class KnockBackScript : TimeBasedEffect {
 	private Vector3 force;
     private NavMeshAgent agent;
 
-	public override void Start () 
+	public override void Awake () 
 	{
-        base.Start();
 		rigidbody = this.GetComponent<Rigidbody>();
         agent=this.GetComponent<NavMeshAgent>();
-        agent.Stop();
-        force = -effectiveness * agent.velocity.normalized;
-		this.rigidbody.AddForce(force, ForceMode.Impulse);
+        
 	}
 
-	public override void UnApply()
+    public override void RefreshEffect(Effect e, float actualEffectiveness)
+    {
+        base.RefreshEffect(e, actualEffectiveness);
+        agent.Stop();
+        force = -effectiveness * agent.velocity.normalized;
+        this.rigidbody.AddForce(force, ForceMode.Impulse);
+    }
+
+    public override void UnApply()
 	{
 		this.rigidbody.AddForce(-force, ForceMode.Impulse);
-        agent.Resume();
+        if (agent.isActiveAndEnabled)
+            agent.Resume();
         base.UnApply();
 	}
 		
