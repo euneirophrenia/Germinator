@@ -15,7 +15,7 @@ public class EntryInspector : PropertyDrawer
 	private int _choice=0;
 
 	private string[] choices = (from x in AppDomain.CurrentDomain.GetAssemblies().SelectMany(s=>s.GetTypes())
-			                         where typeof(EffectScript).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
+			                         where typeof(Effect).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
 		                                 select x.Name).ToArray();
 
 	public int choiceIndex {
@@ -30,8 +30,7 @@ public class EntryInspector : PropertyDrawer
 
 	public override void OnGUI (Rect position, SerializedProperty property, GUIContent label) {
 		UpdateChoices();
-
-		EditorGUI.BeginProperty (position, label, property);
+        EditorGUI.BeginProperty (position, label, property);
 
 		// Disegna il nome del campo
 		position = EditorGUI.PrefixLabel (position, GUIUtility.GetControlID (FocusType.Passive), label);
@@ -47,20 +46,20 @@ public class EntryInspector : PropertyDrawer
 
 		choiceIndex = EditorGUI.Popup(typeRect, choiceIndex, choices);
 		property.FindPropertyRelative("type").stringValue=choices[choiceIndex];
-		property.serializedObject.ApplyModifiedProperties();
+       
+        EditorGUI.PropertyField (valueRect, property.FindPropertyRelative ("effectiveness"), GUIContent.none);
 
-		EditorGUI.PropertyField (valueRect, property.FindPropertyRelative ("effectiveness"), GUIContent.none);
-
-
-		EditorGUI.indentLevel = indent;
+        property.serializedObject.ApplyModifiedProperties();
+        EditorGUI.indentLevel = indent;
 		EditorGUI.EndProperty ();
-	}
+        
+    }
 
 	private void UpdateChoices()
 	{
-		choices=(from x in AppDomain.CurrentDomain.GetAssemblies().SelectMany(s=>s.GetTypes())
-				where typeof(EffectScript).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
-			select x.Name).ToArray();
+        choices = (from x in AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
+                   where typeof(Effect).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface
+                   select x.Name).ToArray();
 	}
 
 }

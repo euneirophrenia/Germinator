@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 
 [Debuff]
-public class SlowScript : TimeBasedEffect {
+public class SlowScript : TimeBasedScript {
 
     private NavMeshAgent agent;
 
@@ -12,12 +12,12 @@ public class SlowScript : TimeBasedEffect {
         effectiveness = 1;
     }
 
-    public void OnDisable()
+    public override void OnDisable()
     {
         effectiveness = 1;
     }
 
-    public override void RefreshEffect(Effect e, float actualEffectiveness)
+    public override void RefreshEffect(TimeBasedEffect e, float actualEffectiveness)
     {
         if (actualEffectiveness > effectiveness)
         {

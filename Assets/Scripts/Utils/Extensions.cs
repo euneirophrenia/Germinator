@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-
 /*
  * Classe contenete le nostre estensioni per le classi di unity. 
  * 
  */
 
-public static class Extensions {
-
+public static class Extensions
+{
     private static PoolManager poolManager = PoolManager.SharedInstance();
 
     /// <summary>
@@ -17,5 +16,4 @@ public static class Extensions {
     {
         poolManager.ReleaseToPool(go);
     }
-
 }

@@ -20,7 +20,7 @@ public class Spawn : MonoBehaviour {
         Destroy(agent); 
 
 		pool = PoolManager.SharedInstance();
-		pool.CreatePool(what, 6, PoolOptions.Static);
+		pool.CreatePool(what, 0, PoolOptions.StackBased);
     }
 
 
@@ -29,6 +29,7 @@ public class Spawn : MonoBehaviour {
         if (countdown <= 0 && howMany>0)
         {
 			GameObject created = pool.GetFromPool(what,this.transform.position);
+            //Debug.Log("[SPAWN] " +created.GetComponent<Hittable>().sensibility[typeof(DOT)]);
 
             NavMeshAgent agent = created.GetComponent<NavMeshAgent>();
             if (cached.status != NavMeshPathStatus.PathComplete)

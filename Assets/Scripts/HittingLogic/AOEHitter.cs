@@ -24,6 +24,11 @@ public class AOEHitter : Hitter {
 
     private bool CanHit(Collider c)
     {
+        if (c.gameObject.layer !=0)
+        {
+             return false;
+        }
+
         foreach (string s in hits)
         {
             if (c.CompareTag(s))

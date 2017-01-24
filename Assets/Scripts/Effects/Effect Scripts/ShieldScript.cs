@@ -1,21 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ShieldScript : MonoBehaviour {
 
-    private Hittable parent;
-    private float previousEffectiveness;
+    private GameObject parent;
 
 	// Use this for initialization
 	public void Start () {
-        parent = this.GetComponentInParent<Hittable>();
-        previousEffectiveness = parent.GetEffectiveness(typeof(DamageScript));
-        parent.SetEffectiveness(typeof(DamageScript), 0);
+        parent = this.transform.parent.gameObject;
+        parent.layer = Physics.IgnoreRaycastLayer;
 	}
 
     public void OnDestroy()
     {
-        parent.SetEffectiveness(typeof(DamageScript), previousEffectiveness);
+        parent.layer = 0;
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using System;
+using UnityEngine;
 using System.Linq;
+
 
 //Questa classe è un dizionario che si può modificare da unity
 
@@ -41,9 +42,7 @@ public class SensibilityDictionary
 				//probabilmente si sta ancora digitando il nome
 			}
 		}
-
-
-	}
+    }
 
 	private Dictionary<Type, float> map;
 
@@ -52,7 +51,7 @@ public class SensibilityDictionary
 	public float this[Type key] {
 		
 		get {
-			return map.ContainsKey(key)? map[key] : defaultValue;
+    		return map.ContainsKey(key)? map[key] : defaultValue;
 		}
 
 		set {

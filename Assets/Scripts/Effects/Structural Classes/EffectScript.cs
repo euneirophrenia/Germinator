@@ -13,12 +13,6 @@ public abstract class EffectScript : MonoBehaviour {
         target = temp[temp.Length - 1];
     }
 
-    public virtual void RefreshEffect(Effect e, float actualEffectivenes)
-    {
-        effectiveness = actualEffectivenes;
-        this.enabled = true;
-    }
-
     public virtual void Apply() { } 
 	public virtual void UnApply() 
 	{

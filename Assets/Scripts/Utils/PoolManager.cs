@@ -17,7 +17,12 @@ public enum PoolOptions
     /// Se automanaged, nasce come lista vuota.
     /// E' il meno efficiente.
     /// </summary>
-    Dynamic
+    Dynamic,
+
+    /// <summary>
+    /// Il pool nasce dinamico, ma più efficiente grazie a un'implementazione a stack anzi che a lista
+    /// </summary>
+    StackBased
 }
 
 public class PoolManager
@@ -28,8 +33,7 @@ public class PoolManager
     private Dictionary<GameObject, PrefabPool> pools;
     private Dictionary<int, PrefabPool> releaseMap;
     private PrefabPool releasePool;
-	private static readonly Vector3 zero = new Vector3(0,0,0);
-
+	
 
     public static PoolManager SharedInstance()
     {
@@ -57,20 +61,45 @@ public class PoolManager
     {
         if (!pools.ContainsKey(prefab))
         {
-            //TODO:
-            //controlla impostazioni mediante asset o altra struttura dati
-            //crea il pool con le impostazioni giuste
-
-            CreatePool(prefab, 3); //test, massimo 3 oggetti, a default static e automanaged
+            CreatePool(prefab, options:PoolOptions.StackBased);
         }
 
         return pools[prefab].Get(position, rotation, activate);
     }
 
-    public void CreatePool(GameObject prefab, int initialSize, PoolOptions opt=PoolOptions.Static, bool autoManaged=true)
+    public void CreatePool(GameObject prefab, int initialSize=0, PoolOptions options=PoolOptions.Static, bool autoManaged=true)
     {
-        pools[prefab] = PrefabPool.CreatePool(prefab, initialSize, this,  opt, autoManaged);
+        pools[prefab] = PrefabPool.CreatePool(prefab, initialSize, this,  options, autoManaged);
 
+    }
+
+    /// <summary>
+    /// Clears the pool for the prefab
+    /// </summary>
+    /// <param name="prefab"></param>
+    public void Clear(GameObject prefab)
+    {
+        pools[prefab].Clear();
+        pools.Remove(prefab);
+    }
+
+    /// <summary>
+    /// Clears all the pools
+    /// </summary>
+    /// <param name="andRunGC">If <code>true</code> will trigger the Garbage collector</param>
+    public void ClearAll(bool andRunGC=true)
+    {
+        foreach(GameObject k in pools.Keys)
+        {
+            pools[k].Clear();
+        }
+
+        pools.Clear();
+
+        if (andRunGC)
+        {
+           GC.Collect();
+        }
     }
 
     private void SetPoolForId(int id, PrefabPool pool)
@@ -104,6 +133,8 @@ public class PoolManager
                     return new DynamicPool(prefab, initialSize, manager, automanaged);
                 case PoolOptions.Static:
                     return new StaticPool(prefab, initialSize, manager, automanaged);
+                case PoolOptions.StackBased:
+                    return new StackPool(prefab, initialSize, manager, automanaged);
                 default:
                     return null;
             }
@@ -124,8 +155,12 @@ public class PoolManager
            g.SetActive(false);     
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
+            foreach(GameObject g in pool)
+            {
+                GameObject.Destroy(g);
+            }
             pool.Clear();
         }
 
@@ -158,7 +193,6 @@ public class PoolManager
 			}
         }
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
 		{
             foreach (GameObject g in pool)
@@ -186,10 +220,6 @@ public class PoolManager
 			return created;
         }
 			
-		public override void Release (GameObject g)
-		{
-			base.Release (g);
-		}
     }
 	#endregion
 
@@ -213,7 +243,6 @@ public class PoolManager
             }
         }
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
         {
             foreach (GameObject g in pool)
@@ -237,6 +266,66 @@ public class PoolManager
             return created;
         }
     }
-	#endregion
+    #endregion
+
+    #region StackBased
+    private class StackPool : PrefabPool
+    {
+        private new Stack<GameObject> pool;
+
+        public StackPool(GameObject prefab, int initialSize, PoolManager manager, bool autoManaged=true) : base(prefab, initialSize, manager)
+        {
+            pool = new Stack<GameObject>();
+            if (!autoManaged)
+            {
+                for (int i = 0; i < initialSize; i++)
+                {
+                    GameObject created = GameObject.Instantiate(prefab);
+                    created.SetActive(false);
+                    manager.SetPoolForId(created.GetInstanceID(), this);
+                    pool.Push(created);
+                }
+            }
+        }
+
+
+        public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
+        {
+            GameObject created;
+            if (pool.Count == 0)
+            {
+                created = GameObject.Instantiate(prefab);
+                created.transform.position = position;
+                created.transform.rotation = rotation;
+                created.SetActive(activate);
+                manager.SetPoolForId(created.GetInstanceID(), this);
+                return created;
+            }
+
+            created= pool.Pop();
+            created.transform.position = position;
+            created.transform.rotation = rotation;
+            created.SetActive(activate);
+            return created;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public override void Release(GameObject g)
+        {
+            base.Release(g);
+            pool.Push(g);
+        }
+
+        public override void Clear()
+        {
+            foreach (GameObject g in pool)
+            {
+                GameObject.Destroy(g);
+            }
+            pool.Clear();
+        }
+    }
+
+    #endregion
     #endregion
 }

@@ -14,4 +14,10 @@ public class Damage : Effect
 	{
 		this.Effectiveness = value;
 	}
+
+    public override void Proc(Hittable target, float actual)
+    {
+        base.Proc(target, actual);
+        target.AddToHp(-(int)actual);
+    }
 }

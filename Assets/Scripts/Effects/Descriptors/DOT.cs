@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 [Serializable]
 [CreateAssetMenu(fileName="DoT", menuName="Effect/DoT")]
-public class DOT : Effect {
+public class DOT : TimeBasedEffect {
 
 	public DOT(float effect, int ticks, float cooldown=1)  : base() //dura cooldown*ticks secondi
 	{

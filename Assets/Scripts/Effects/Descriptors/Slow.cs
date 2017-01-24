@@ -4,7 +4,7 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(fileName="Slow", menuName="Effect/Slow")]
-public class Slow : Effect
+public class Slow : TimeBasedEffect
 {
 	
 	public Slow(float effect, int ticks, float cooldown=1)  : base() //dura cooldown*ticks secondi

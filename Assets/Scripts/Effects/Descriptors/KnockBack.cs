@@ -3,7 +3,7 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(fileName="KnockBack", menuName="Effect/KnockBack")]
-public class KnockBack : Effect
+public class KnockBack : TimeBasedEffect
 { 
 	public KnockBack(float value) : base()
 	{

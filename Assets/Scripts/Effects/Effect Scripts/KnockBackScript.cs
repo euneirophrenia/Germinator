@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 
 [Debuff]
-public class KnockBackScript : TimeBasedEffect {
+public class KnockBackScript : TimeBasedScript {
 
 	private new Rigidbody rigidbody;
 	private Vector3 force;
@@ -15,7 +15,7 @@ public class KnockBackScript : TimeBasedEffect {
         
 	}
 
-    public override void RefreshEffect(Effect e, float actualEffectiveness)
+    public override void RefreshEffect(TimeBasedEffect e, float actualEffectiveness)
     {
         base.RefreshEffect(e, actualEffectiveness);
         agent.Stop();

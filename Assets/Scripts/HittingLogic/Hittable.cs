@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System.Diagnostics;
 using System;
 using AsyncCoroutines;
 
@@ -12,6 +11,7 @@ public class Hittable : MonoBehaviour {
     [HideInInspector, SerializeField]
     private int maxHP; 
 
+    [SerializeField]
     public SensibilityDictionary sensibility;
 
     /*Oltre a farmi comodo per resettare oggetti in pool, sorprendentemente migliora l'efficienza
@@ -23,28 +23,20 @@ public class Hittable : MonoBehaviour {
     {
         foreach (Effect e in effects)
         {
-            this.StartCoroutineAsync(Proc(e));
+            //this.StartCoroutineAsync(Proc(e));
+            Proc(e);
         }
     }
 	
-    public virtual IEnumerator Proc(Effect effect)
-    {   
-        //Type tipo = Type.GetType(effect.effectScriptName);
-		Type tipo = effect.EffectType;
+    public virtual  void /*IEnumerator*/ Proc(Effect effect)
+    {
+        float effectiveness = effect.Effectiveness * sensibility[effect.GetType()];
+        if (effectiveness == 0)
+            return;//yield break;
 
-		float effectiveness = effect.Effectiveness * sensibility[tipo];
-		if (effectiveness==0)
-			yield break;
+        //yield return Ninja.JumpToUnity;
+        effect.Proc(this, effectiveness);
 
-        EffectScript previous = this.FindActive(tipo);
-
-		yield return Ninja.JumpToUnity;
-        if (previous == null)
-        {
-            previous = (EffectScript)this.gameObject.AddComponent(tipo);
-            this.effectsCache.Add(previous);
-        }
-        previous.RefreshEffect(effect, effectiveness);
     }
     #endregion
 
@@ -65,12 +57,16 @@ public class Hittable : MonoBehaviour {
         if (HP<=0)
         {
             //animazioncina
-            Destroy(this.gameObject);
-            //release anzi che destroy
+            this.gameObject.Release();
         }
     }
 
-    private EffectScript FindActive(Type tipo)
+    public void Cache(EffectScript effect)
+    {
+        this.effectsCache.Add(effect);
+    }
+
+    public EffectScript FindActive(Type tipo)
     {
         foreach (EffectScript e in this.effectsCache)
         {
@@ -84,6 +80,11 @@ public class Hittable : MonoBehaviour {
 
 
     #region UNITY CALLBACKS
+
+    public void Awake()
+    {
+        sensibility.Build();
+    }
 
     public void Start()
     {
@@ -103,16 +104,15 @@ public class Hittable : MonoBehaviour {
 
        foreach (EffectScript e in this.effectsCache)
         {
-            e.UnApply();
+           e.UnApply();
         }
     }
 
     //per popolare correttamente la mappa dall'editor di unity
-    [Conditional("UNITY_EDITOR")]
 	void OnValidate()
 	{
-		sensibility.Build();
-        maxHP = HP;
+        sensibility.Build();
+        this.maxHP = HP;
     }
     #endregion
 }

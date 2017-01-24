@@ -33,6 +33,11 @@ public abstract class Hitter : MonoBehaviour {
 
 	protected virtual bool CanHit(Hittable h)
 	{
+        if (h.gameObject.layer != 0)
+        {
+            return false;
+        }
+
 		foreach(string s in hits)
 		{
 			if (h.CompareTag(s))
