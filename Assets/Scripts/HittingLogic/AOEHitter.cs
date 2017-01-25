@@ -22,22 +22,6 @@ public class AOEHitter : Hitter {
 		destroy=true;
 	}
 
-    private bool CanHit(Collider c)
-    {
-        if (c.gameObject.layer !=0)
-        {
-             return false;
-        }
-
-        foreach (string s in hits)
-        {
-            if (c.CompareTag(s))
-                return true;
-        }
-
-        return false;
-    }
-
     [Conditional("UNITY_EDITOR")]
 	void OnDrawGizmosSelected()
 	{

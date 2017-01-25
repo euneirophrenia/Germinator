@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Vexe.Runtime.Types;
 
-public abstract class Hitter : MonoBehaviour {
+public abstract class Hitter :BaseBehaviour {
 
 	public List<Effect> effects;
 
+    [PerItem, Tags]
     public string[] hits;
 
     protected bool destroy = false;
@@ -12,16 +14,16 @@ public abstract class Hitter : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
     {
-		if (isTriggering)
+		if (isTriggering || !CanHit(collision))
 			return; 
-		isTriggering=true;
 
 		Hittable other = collision.GetComponent<Hittable>();
-
-		if (other==null || !CanHit(other))
+		if (other==null)
 			return;
 
-		other.Proc(effects);
+
+        isTriggering = true;
+        other.Proc(effects);
           
         HandleHit(other); //per cose tipo consentire hit consecutivi  
         if (destroy)
@@ -31,7 +33,7 @@ public abstract class Hitter : MonoBehaviour {
         }  
     }
 
-	protected virtual bool CanHit(Hittable h)
+	protected virtual bool CanHit(Collider h)
 	{
         if (h.gameObject.layer != 0)
         {
