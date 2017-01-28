@@ -1,5 +1,5 @@
 ﻿[Debuff]
-public class DOTScript : TimeBasedScript {
+public class DOTScript : TickingEffectScript {
 
 	public override void Apply()
 	{

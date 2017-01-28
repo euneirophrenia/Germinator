@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public abstract class TimeBasedScript : EffectScript {
+public abstract class TickingEffectScript : EffectScript {
 
     public float cooldown;
     public float activeCoolDown = 0;
 
     public int remainingTicks = int.MaxValue;
-   
-	// Update is called once per frame
-	public virtual void Update () {
+
+    // Update is called once per frame
+    public virtual void Update () {
 
         if (activeCoolDown<=0)
         {
-			this.Apply();
+            this.Apply();
             activeCoolDown = cooldown;
             remainingTicks--;
 			return;
@@ -27,19 +27,12 @@ public abstract class TimeBasedScript : EffectScript {
 
 	}
 
-    public virtual void OnDisable()
+    public virtual void RefreshEffect(TickingEffect e, float actualEffectiveness, float duration)
     {
-        effectiveness = 0;
-    }
-
-    public virtual void RefreshEffect(TimeBasedEffect e, float actualEffectiveness)
-    {
-        if (actualEffectiveness > effectiveness)
-            effectiveness = actualEffectiveness;
-        remainingTicks = (e.Ticks <= 0 ? int.MaxValue : e.Ticks);
+        effectiveness = actualEffectiveness;
+        remainingTicks = (e.Ticks <= 0 ? int.MaxValue : (int)(e.Ticks*duration));
         cooldown = e.Cooldown;
         activeCoolDown = 0; //nuovo tick al refresh, mi pare sensato
         this.enabled = true;
-
-    }
+     }
 }

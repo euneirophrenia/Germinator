@@ -14,9 +14,12 @@ public class Hittable : MonoBehaviour {
     [SerializeField]
     public SensibilityDictionary sensibility;
 
+    public SensibilityDictionary durations;
+
     /*Oltre a farmi comodo per resettare oggetti in pool, sorprendentemente migliora l'efficienza
      * visto che si risparmiano le getComponent per controllare se è presente o no un effetto */
     private List<EffectScript> effectsCache;
+
 
     #region PROC LOGIC
     public void Proc(IEnumerable<Effect> effects)
@@ -51,6 +54,16 @@ public class Hittable : MonoBehaviour {
 		return sensibility[t];
     }
 
+    public void SetDuration(Type tipo, float value)
+    {
+        durations[tipo] = value;
+    }
+
+    public float GetDuration(Type t)
+    {
+        return durations[t];
+    }
+
     public void AddToHp(int value)
     {
         HP += value;
@@ -66,15 +79,16 @@ public class Hittable : MonoBehaviour {
         this.effectsCache.Add(effect);
     }
 
-    public EffectScript FindActive(Type tipo)
+    public EffectScript FindActive(Type tipo, float actual)
     {
         foreach (EffectScript e in this.effectsCache)
         {
-            if (tipo.IsAssignableFrom(e.GetType()))
+            if (tipo.IsAssignableFrom(e.GetType()) && e.effectiveness == actual)
                 return e;
         }
         return null;
     }
+
 
     #endregion
 
@@ -84,6 +98,7 @@ public class Hittable : MonoBehaviour {
     public void Awake()
     {
         sensibility.Build();
+        durations.Build();
     }
 
     public void Start()
@@ -102,9 +117,10 @@ public class Hittable : MonoBehaviour {
         if (effectsCache == null)
             return;
 
-       foreach (EffectScript e in this.effectsCache)
+        foreach (EffectScript e in this.effectsCache)
         {
-           e.UnApply();
+            if (e.isActiveAndEnabled)
+                e.UnApply();
         }
     }
 
@@ -112,6 +128,7 @@ public class Hittable : MonoBehaviour {
 	void OnValidate()
 	{
         sensibility.Build();
+        durations.Build();
         this.maxHP = HP;
     }
     #endregion

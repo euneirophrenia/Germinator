@@ -6,6 +6,7 @@ public abstract class EffectScript : MonoBehaviour {
     public float effectiveness;
     protected Hittable target;
     private Hittable[] temp;
+    
 
     public virtual void Awake()
     {

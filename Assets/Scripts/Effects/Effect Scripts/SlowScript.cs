@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 [Debuff]
-public class SlowScript : TimeBasedScript {
+public class SlowScript : LastingScript {
 
     private NavMeshAgent agent;
 
@@ -12,20 +13,12 @@ public class SlowScript : TimeBasedScript {
         effectiveness = 1;
     }
 
-    public override void OnDisable()
+    public override void Refresh(LastingEffect e, float actualEffectiveness, float duration)
     {
-        effectiveness = 1;
-    }
-
-    public override void RefreshEffect(TimeBasedEffect e, float actualEffectiveness)
-    {
-        if (actualEffectiveness > effectiveness)
-        {
+        if (this.isActiveAndEnabled)
             agent.speed *= effectiveness;
-            agent.speed /= actualEffectiveness;
-        }
-        base.RefreshEffect(e, actualEffectiveness);
-
+        agent.speed /= actualEffectiveness;
+        base.Refresh(e, actualEffectiveness, duration);
     }
 
     public override void UnApply()

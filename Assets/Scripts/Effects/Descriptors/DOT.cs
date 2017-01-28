@@ -3,7 +3,7 @@ using System;
 
 [Serializable]
 [CreateAssetMenu(fileName="DoT", menuName="Effect/DoT")]
-public class DOT : TimeBasedEffect {
+public class DOT : TickingEffect {
 
 	public DOT(float effect, int ticks, float cooldown=1)  : base() //dura cooldown*ticks secondi
 	{

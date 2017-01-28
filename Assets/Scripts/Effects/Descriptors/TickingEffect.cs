@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 
 
-public abstract class TimeBasedEffect : Effect
+public abstract class TickingEffect : Effect
 {
     [SerializeField]
     protected int ticks = 0;
@@ -16,7 +16,7 @@ public abstract class TimeBasedEffect : Effect
 
     private Type tipo;
 
-    protected TimeBasedEffect()
+    protected TickingEffect()
     {
         this.scriptName = this.GetType().Name + "Script";
         tipo = Type.GetType(this.scriptName);
@@ -24,15 +24,29 @@ public abstract class TimeBasedEffect : Effect
 
     public override void Proc(Hittable target, float actual)
     {
-        TimeBasedScript previous= (TimeBasedScript)target.FindActive(tipo);
+        TickingEffectScript previous= (TickingEffectScript)target.FindActive(tipo, actual);
         if (previous == null)
         {
-            previous = (TimeBasedScript)target.gameObject.AddComponent(tipo);
+            previous = (TickingEffectScript)target.gameObject.AddComponent(tipo);
             target.Cache(previous);
             
         }
-        previous.RefreshEffect(this, actual);
+        previous.RefreshEffect(this, actual, target.GetDuration(this.GetType()));
         base.Proc(target, actual);
+    }
+
+    public override bool Equals(object other)
+    {
+        return other is TickingEffect 
+            && other.GetType() == this.GetType()
+            && this.cooldown == ((TickingEffect)other).cooldown 
+            && this.ticks == ((TickingEffect)other).ticks
+            && this.effect == ((TickingEffect)other).effect;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
     }
 
     public virtual string effectScriptName

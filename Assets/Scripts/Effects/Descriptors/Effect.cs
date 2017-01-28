@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public abstract class Effect : ScriptableObject //non tutti useranno tutto
+public abstract class Effect : ScriptableObject
 {
 	[SerializeField]
 	protected float effect =0f; //con  significato diverso a seconda dell'effetto concreto, puo' essere percentuale di slow dichiarata o altro
@@ -23,5 +23,16 @@ public abstract class Effect : ScriptableObject //non tutti useranno tutto
 			effect=value;
 		}
 	}
-    
+
+    public override bool Equals(object other)
+    {
+        return other is Effect && this.GetType() == other.GetType() && this.effect == ((Effect)other).effect;
+       
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
 }

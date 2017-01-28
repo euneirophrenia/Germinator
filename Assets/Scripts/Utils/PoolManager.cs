@@ -102,6 +102,21 @@ public class PoolManager
         }
     }
 
+    public IEnumerable<GameObject> CurrentlyPooled()
+    {
+        return this.pools.Keys;
+    }
+
+    public int CurrentSize(GameObject prefab)
+    {
+        return this.pools[prefab].CurrentSize();
+    }
+
+    public int CurrentlyFree(GameObject prefab)
+    {
+        return this.pools[prefab].CurrentlyFree();
+    }
+
     private void SetPoolForId(int id, PrefabPool pool)
     {
         this.releaseMap[id] = pool;
@@ -140,6 +155,21 @@ public class PoolManager
             }
         }
 
+        public virtual int CurrentSize()
+        {
+            return this.pool.Count;
+        }
+
+        public virtual int CurrentlyFree()
+        {
+            int res = 0;
+            foreach (GameObject g in pool)
+            {
+                if (g.activeInHierarchy)
+                    res++;
+            }
+            return res;
+        }
 
         public PrefabPool(GameObject prefab, int initialSize, PoolManager manager)
         {
@@ -193,7 +223,12 @@ public class PoolManager
 			}
         }
 
-		public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
+        public override int CurrentSize()
+        {
+            return actualSize;
+        }
+
+        public override GameObject Get(Vector3 position, Quaternion rotation, bool activate)
 		{
             foreach (GameObject g in pool)
             {
@@ -272,6 +307,7 @@ public class PoolManager
     private class StackPool : PrefabPool
     {
         private new Stack<GameObject> pool;
+        private int size=0;
 
         public StackPool(GameObject prefab, int initialSize, PoolManager manager, bool autoManaged=true) : base(prefab, initialSize, manager)
         {
@@ -284,6 +320,7 @@ public class PoolManager
                     created.SetActive(false);
                     manager.SetPoolForId(created.GetInstanceID(), this);
                     pool.Push(created);
+                    size++;
                 }
             }
         }
@@ -299,6 +336,7 @@ public class PoolManager
                 created.transform.rotation = rotation;
                 created.SetActive(activate);
                 manager.SetPoolForId(created.GetInstanceID(), this);
+                size++;
                 return created;
             }
 
@@ -314,6 +352,16 @@ public class PoolManager
         {
             base.Release(g);
             pool.Push(g);
+        }
+
+        public override int CurrentSize()
+        {
+            return size;
+        }
+
+        public override int CurrentlyFree()
+        {
+            return pool.Count;
         }
 
         public override void Clear()

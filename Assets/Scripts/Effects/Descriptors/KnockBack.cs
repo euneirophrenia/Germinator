@@ -3,15 +3,16 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(fileName="KnockBack", menuName="Effect/KnockBack")]
-public class KnockBack : TimeBasedEffect
+public class KnockBack : LastingEffect
 { 
-	public KnockBack(float value) : base()
+	public KnockBack(float value, float duration) : base()
 	{
-		init(value);
+		init(value, duration);
 	}
 
-	public void init(float value)
+	public void init(float value, float duration)
 	{
 		this.Effectiveness = value;
+        this.duration = duration;
 	}
 }

@@ -48,7 +48,6 @@ public class EntryInspector : PropertyDrawer
 		property.FindPropertyRelative("type").stringValue=choices[choiceIndex];
        
         EditorGUI.PropertyField (valueRect, property.FindPropertyRelative ("effectiveness"), GUIContent.none);
-
         property.serializedObject.ApplyModifiedProperties();
         EditorGUI.indentLevel = indent;
 		EditorGUI.EndProperty ();
