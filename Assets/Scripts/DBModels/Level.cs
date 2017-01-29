@@ -4,25 +4,21 @@ using UnityEngine;
 using System;
 using Vexe.Runtime.Types;
 
-//Non riesco ad utilizzare le properties per serializzare
-
 [Serializable]
 [CreateAssetMenu(fileName = "Level", menuName = "Add Level")]
 public class Level : BaseScriptableObject
 {
-    public List<Wave> Waves = new List<Wave>();
+    public Wave[] Waves;
 
     /// <summary>
     /// Multiplier validi per tutto il livello
     /// </summary>
-    [SerializeField]
-    public List<Modifier> Modifiers = new List<Modifier>();
+    public Modifier[] Modifiers;
 
     /// <summary>
     /// Proprietà generali del livello (es Gold iniziali)
     /// </summary>
-    [SerializeField]
-    public List<GenericProperty> Properties = new List<GenericProperty>();
+    public GenericProperty[] Properties;
 }
 
 [Serializable]
@@ -31,20 +27,16 @@ public class Modifier
     /// <summary>
     /// Nome della classe da istanziare
     /// </summary>
-    [SerializeField]
     public string ModifierType;
 
-    [SerializeField]
     public float Effectiveness;
 }
 
 [Serializable]
 public class GenericProperty
 {
-    [SerializeField]
     public string Name;
 
-    [SerializeField]
     public string Value;
 	/* il gestore deve castare nella set al tipo giusto*/
 }
@@ -52,43 +44,44 @@ public class GenericProperty
 [Serializable]
 public class Wave
 {
-    [SerializeField]
-    public List<Group> Groups = new List<Group>();
+    public Group[] Groups;
 }
 
 [Serializable]
 public class Group
 {
     /// <summary>
-    /// Prefab/Reference al nemico da spawnare
+    /// Indice di tempo in cui spawnare il gruppo
     /// </summary>
-    [SerializeField]
+    public int TimeIndex;
+
+    /// <summary>
+    /// Nome dello spawner da cui spawnare il gruppo
+    /// </summary>
+    public string Spawner;
+
+    /// <summary>
+    /// Prefab del nemico da spawnare
+    /// </summary>
     public GameObject Enemy;
 
     /// <summary>
     /// Numero di secondi tra un Enemy e l'altro all'interno dello stesso Group
     /// </summary>
-    [SerializeField]
-    public int TimeBetweenEnemies;
+    public float TimeBetweenEnemies;
 
     /// <summary>
     /// Numero di Enemy all'interno del Group
     /// </summary>
-    [SerializeField]
     public int Count;
 
     /// <summary>
     /// Numero di secondi di offset atteso prima di iniziare lo spawn del Group
     /// </summary>
-    [SerializeField]
-    public int TimeOffset;
+    public float TimeBeforeGroupSpawn;
+
+    
 }
-
-//public class Enemy
-//{
-//    public string Name { get; set; }
-//}
-
 
 //Livelli realizzati come scene "prefabbricate". 
 //Contengono un oggetto "Level" con uno script attaccato che si occupa di recuperare la struttura LevelWaves relativa al livello corrente.
