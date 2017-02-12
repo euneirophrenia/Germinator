@@ -4,14 +4,15 @@ public class ShieldScript : MonoBehaviour {
 
     private GameObject parent;
 
-	// Use this for initialization
-	public void Start () {
+    // Use this for initialization
+    public void Start()
+    {
         parent = this.transform.parent.gameObject;
-        parent.layer = Physics.IgnoreRaycastLayer;
-	}
+        parent.layer = CustomLayerEnum.Shielded;
+    }
 
     public void OnDestroy()
     {
-        parent.layer = 0;
+        parent.layer = CustomLayerEnum.Enemy;
     }
 }

@@ -7,7 +7,8 @@ public class AOEHitter : Hitter {
 
 	public override void HandleHit(Hittable hit)
 	{
-        Collider[] others= Physics.OverlapSphere(hit.transform.position, radius);
+        Collider[] others= Physics.OverlapSphere(hit.transform.position, radius, CustomLayerEnum.Enemy);
+        
 		foreach (Collider other in others)
 		{
             if (CanHit(other))

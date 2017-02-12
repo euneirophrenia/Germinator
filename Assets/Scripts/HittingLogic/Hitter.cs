@@ -35,11 +35,6 @@ public abstract class Hitter :BaseBehaviour {
 
 	protected virtual bool CanHit(Collider h)
 	{
-        if (h.gameObject.layer != 0)
-        {
-            return false;
-        }
-
 		foreach(string s in hits)
 		{
 			if (h.CompareTag(s))
