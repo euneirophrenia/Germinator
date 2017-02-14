@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// Da aggiungere una sola volta ad un solo oggetto (es.: main camera).
@@ -9,7 +10,8 @@ using UnityEngine;
 /// <c>OnTouchUp(Touchinfo t)</c> quando il dito si alza <br/>
 /// <c>OnTouchStay(Touchinfo t)</c> ogni frame in cui il touch è continuativo e fermo su un oggetto <br/>
 /// <c>OnTouchMoved(Touchinfo t)</c> ogni frame che il touch si muove su un oggetto <br/>
-/// <c>OnTouchEnded()</c> quando un touch esce da un oggetto (senza sollevare il dito)
+/// <c>OnTouchExit()</c> quando un touch esce da un oggetto (senza sollevare il dito)
+/// <c>OnTouchCancel()</c> quando il touch non è più tracciato. Così dice unity, non so cosa significhi.
 /// </summary>
 public class TransparentTouch : MonoBehaviour
 {
@@ -18,8 +20,7 @@ public class TransparentTouch : MonoBehaviour
     /// Non ho onestamente lo sbatto di implementare e lanciare tutti gli eventi corrispondenti
     /// </summary>
     public bool simulateWithMouse = true;
-    private Dictionary<GameObject,bool> touched = new Dictionary<GameObject, bool>();
-    private List<GameObject> toRemove = new List<GameObject>();
+    private Dictionary<GameObject, bool> touched = new Dictionary<GameObject, bool>();
     private RaycastHit hitinfo;
 
     void Update()
@@ -47,28 +48,24 @@ public class TransparentTouch : MonoBehaviour
                     hitinfo.transform.SendMessage("OnTouchStay", touchinfo, SendMessageOptions.DontRequireReceiver);
                     break;
                 case TouchPhase.Canceled:
-                    hitinfo.transform.SendMessage("OnTouchEnded", null, SendMessageOptions.DontRequireReceiver);
+                    hitinfo.transform.SendMessage("OnTouchCancel", null, SendMessageOptions.DontRequireReceiver);
                     break;
                 default: break;
             }
         }
 
-#if !UNITY_EDITOR
-        foreach (GameObject g in touched.Keys)
+#if true//!UNITY_EDITOR
+       
+        foreach (GameObject g in touched.Keys.ToArray())
         {
             if (!touched[g])
             {
-                g.SendMessage("OnTouchEnded", null, SendMessageOptions.DontRequireReceiver);
-                toRemove.Add(g);
-                
+                g.SendMessage("OnTouchExit", null, SendMessageOptions.DontRequireReceiver);
+                touched.Remove(g);
             }
             else
                 touched[g] = false;
         }
-
-        foreach (GameObject g in toRemove)
-            touched.Remove(g);
-        toRemove.Clear();
 
 #else 
         if (!simulateWithMouse)
@@ -129,7 +126,7 @@ public struct TouchInfo
         RaycastHit hitinfo;
         Ray ray = Camera.main.ScreenPointToRay(t.position);
         if (!Physics.Raycast(ray, out hitinfo))
-            throw new Exception("Touch is not on any collider");
+            throw new Exception("Touch is not on any collider.");
 
         this.touch = t;
         this.worldPosition = hitinfo.point;
