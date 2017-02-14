@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,8 +13,13 @@ using UnityEngine;
 /// </summary>
 public class TransparentTouch : MonoBehaviour
 {
-    public bool simulateWithMouse = false;
+    /// <summary>
+    /// Se <c>true</c> il mouse sarà usato nell'editor per simulare eventi OnTouchDown e OnTouchUp.
+    /// Non ho onestamente lo sbatto di implementare e lanciare tutti gli eventi corrispondenti
+    /// </summary>
+    public bool simulateWithMouse = true;
     private Dictionary<GameObject,bool> touched = new Dictionary<GameObject, bool>();
+    private List<GameObject> toRemove = new List<GameObject>();
     private RaycastHit hitinfo;
 
     void Update()
@@ -47,18 +53,24 @@ public class TransparentTouch : MonoBehaviour
             }
         }
 
+#if !UNITY_EDITOR
         foreach (GameObject g in touched.Keys)
         {
             if (!touched[g])
             {
                 g.SendMessage("OnTouchEnded", null, SendMessageOptions.DontRequireReceiver);
-                touched.Remove(g);
+                toRemove.Add(g);
+                
             }
             else
                 touched[g] = false;
         }
 
-#if UNITY_EDITOR
+        foreach (GameObject g in toRemove)
+            touched.Remove(g);
+        toRemove.Clear();
+
+#else 
         if (!simulateWithMouse)
             return;
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0) || Input.GetMouseButton(0))
@@ -66,16 +78,26 @@ public class TransparentTouch : MonoBehaviour
            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
            if (!Physics.Raycast(ray, out hitinfo))
                 return;
-            Touch simulated = new Touch();
-            simulated.position = Input.mousePosition;
-            if (Input.GetMouseButtonDown(0))
+            Touch t = new Touch();
+            t.position = Input.mousePosition;
+            TouchInfo simulated = new TouchInfo(t, hitinfo.point);
+            
+            if (Input.GetMouseButtonDown(0) && touched.Keys.Count==0)
             {
                 hitinfo.transform.SendMessage("OnTouchDown", simulated, SendMessageOptions.DontRequireReceiver);
+                touched[hitinfo.transform.gameObject] = true;
                 return;
             }
             if (Input.GetMouseButtonUp(0))
             {
                 hitinfo.transform.SendMessage("OnTouchUp", simulated, SendMessageOptions.DontRequireReceiver);
+                touched.Clear();
+                return;
+            }
+
+            if (Input.GetMouseButton(0) && touched.Keys.Count>0)
+            {
+                hitinfo.transform.SendMessage("OnTouchMoved", simulated, SendMessageOptions.DontRequireReceiver);
                 return;
             }
         }
@@ -100,5 +122,16 @@ public struct TouchInfo
     public static implicit operator Touch(TouchInfo i)
     {
         return i.touch;
+    }
+
+    public TouchInfo(Touch t)
+    {
+        RaycastHit hitinfo;
+        Ray ray = Camera.main.ScreenPointToRay(t.position);
+        if (!Physics.Raycast(ray, out hitinfo))
+            throw new Exception("Touch is not on any collider");
+
+        this.touch = t;
+        this.worldPosition = hitinfo.point;
     }
 }

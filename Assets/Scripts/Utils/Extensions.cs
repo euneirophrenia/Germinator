@@ -32,4 +32,15 @@ public static class Extensions
                 where r.IsMatch(go.name)
                 select g).ToArray();
     }
+
+
+    public static GameObject TouchedObject(this Touch t)
+    {
+        RaycastHit hitinfo;
+        Ray ray = Camera.main.ScreenPointToRay(t.position);
+        if (!Physics.Raycast(ray, out hitinfo))
+            return null;
+
+        return hitinfo.transform.gameObject;
+    }
 }
