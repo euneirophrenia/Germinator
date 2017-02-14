@@ -54,7 +54,7 @@ public class TransparentTouch : MonoBehaviour
             }
         }
 
-#if true//!UNITY_EDITOR
+#if !UNITY_EDITOR
        
         foreach (GameObject g in touched.Keys.ToArray())
         {
