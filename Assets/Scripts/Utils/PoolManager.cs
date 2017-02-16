@@ -67,6 +67,13 @@ public class PoolManager
         return pools[prefab].Get(position, rotation, activate);
     }
 
+    /// <summary>
+    /// Create pool for the specified prefab.
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <param name="initialSize"></param>
+    /// <param name="options"></param>
+    /// <param name="autoManaged">if <c>true</c> the pool will start empty and fill as needed</param>
     public void CreatePool(GameObject prefab, int initialSize=0, PoolOptions options=PoolOptions.Static, bool autoManaged=true)
     {
         pools[prefab] = PrefabPool.CreatePool(prefab, initialSize, this,  options, autoManaged);
