@@ -11,13 +11,12 @@ public struct CustomLayerEnum
     private static readonly CustomLayerEnum enemy = new CustomLayerEnum("EnemyDefault");
     private static readonly CustomLayerEnum shielded = new CustomLayerEnum("ShieldedEnemy");
     private static readonly CustomLayerEnum projectile = new CustomLayerEnum("Projectile");
+    public readonly string Value;
 
     private CustomLayerEnum(string v)
     {
         Value = v;
     }
-
-    public string Value { get; set; }
 
     /// <summary>
     /// Il layer in cui a default giacciono gli enemy colpibili.
@@ -42,5 +41,10 @@ public struct CustomLayerEnum
     public static implicit operator int(CustomLayerEnum e)
     {
         return LayerMask.NameToLayer(e.Value);
+    }
+
+    public int ToMask()
+    {
+        return 1 << this;
     }
 }
