@@ -22,11 +22,11 @@ GameObject:
   - component: {fileID: 33528150373542118}
   - component: {fileID: 65581636163529266}
   - component: {fileID: 23394662404740938}
-  - component: {fileID: 114676676271016082}
   - component: {fileID: 195372363623148332}
+  - component: {fileID: 114119866123673594}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,7 +94,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114676676271016082
+--- !u!114 &114119866123673594
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -102,13 +102,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1582869734419478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fce60ca347edb544a2f7188144ec735, type: 3}
+  m_Script: {fileID: 11500000, guid: 247b0382a42f145449909da927e525b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  what: {fileID: 1557240072149614, guid: e34f4d946cb26a54fa68f7f2c6b87480, type: 2}
-  target: {fileID: 1610480583632046, guid: 27a6e4205a8e45e4c9b19262010844d7, type: 2}
-  howMany: 10
-  deltaTime: 4
+  target: {fileID: 0}
 --- !u!195 &195372363623148332
 NavMeshAgent:
   m_ObjectHideFlags: 1
