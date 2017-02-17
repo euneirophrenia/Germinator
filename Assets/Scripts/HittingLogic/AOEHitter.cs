@@ -7,10 +7,11 @@ public class AOEHitter : Hitter {
 
 	public override void HandleHit(Hittable hit)
 	{
-        Collider[] others= Physics.OverlapSphere(hit.transform.position, radius, CustomLayerEnum.Enemy);
+        Collider[] others= Physics.OverlapSphere(hit.transform.position, radius, CustomLayerEnum.Enemy.ToMask());
         
 		foreach (Collider other in others)
 		{
+            UnityEngine.Debug.Log(other.transform.name);
             if (CanHit(other))
             {
                 Hittable h = other.GetComponent<Hittable>();

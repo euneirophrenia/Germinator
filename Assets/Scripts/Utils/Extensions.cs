@@ -9,6 +9,8 @@ using System.Linq;
 public static class Extensions
 {
     private static PoolManager poolManager = PoolManager.SharedInstance();
+    private static RaycastHit hitinfo;
+    private static Ray ray;
 
     /// <summary>
     /// Rilascia il gameObject al suo pool.
@@ -36,11 +38,19 @@ public static class Extensions
 
     public static GameObject TouchedObject(this Touch t)
     {
-        RaycastHit hitinfo;
-        Ray ray = Camera.main.ScreenPointToRay(t.position);
+        ray = Camera.main.ScreenPointToRay(t.position);
         if (!Physics.Raycast(ray, out hitinfo))
             return null;
 
         return hitinfo.transform.gameObject;
+    }
+
+    public static Vector3? TouchedPoint(this Touch t)
+    {
+        ray = Camera.main.ScreenPointToRay(t.position);
+        if (!Physics.Raycast(ray, out hitinfo))
+            return null;
+
+        return hitinfo.point;
     }
 }

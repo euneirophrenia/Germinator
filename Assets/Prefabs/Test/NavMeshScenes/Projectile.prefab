@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23724658743553896}
   - component: {fileID: 114525854489772552}
   - component: {fileID: 114114013807740944}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
     _HashCodes: fd6aa4637e3610080623e5496f9a0353ada6e846645b9762e6d6536bebe9570cece9570c0000000000000000000000000000000000000000000000000000000000000000
     _Next: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000
     _Count: 9
-    _Version: 5681
+    _Version: 6779
     _FreeList: -1
     _FreeCount: 0
     _Keys: fd6aa4637e3610880623e5c96f9a03d3ada6e846645b9762e6d6536bebe9570cece9570c0000000000000000000000000000000000000000000000000000000000000000

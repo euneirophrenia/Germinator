@@ -4,14 +4,14 @@ using UnityEngine;
 using System.Linq;
 
 /// <summary>
-/// Da aggiungere una sola volta ad un solo oggetto (es.: main camera).
-/// Invoca automaticamente le funzioni
+/// Da aggiungere una sola volta ad un solo oggetto (es.: main camera). <br/>
+/// Invoca automaticamente le funzioni:
 /// <c>OnTouchDown(Touchinfo t)</c> all'inizio di un touch <br/>
 /// <c>OnTouchUp(Touchinfo t)</c> quando il dito si alza <br/>
 /// <c>OnTouchStay(Touchinfo t)</c> ogni frame in cui il touch è continuativo e fermo su un oggetto <br/>
 /// <c>OnTouchMoved(Touchinfo t)</c> ogni frame che il touch si muove su un oggetto <br/>
-/// <c>OnTouchExit()</c> quando un touch esce da un oggetto (senza sollevare il dito)
-/// <c>OnTouchCancel()</c> quando il touch non è più tracciato. Così dice unity, non so cosa significhi.
+/// <c>OnTouchExit()</c> quando un touch esce da un oggetto (anche senza sollevare il dito)<br/>
+/// <c>OnTouchCancel()</c> quando il touch non è più tracciato. Così dice unity, non so cosa significhi.<br/>
 /// </summary>
 public class TransparentTouch : MonoBehaviour
 {
@@ -79,7 +79,7 @@ public class TransparentTouch : MonoBehaviour
             t.position = Input.mousePosition;
             TouchInfo simulated = new TouchInfo(t, hitinfo.point);
             
-            if (Input.GetMouseButtonDown(0) && touched.Keys.Count==0)
+            if (Input.GetMouseButtonDown(0))
             {
                 hitinfo.transform.SendMessage("OnTouchDown", simulated, SendMessageOptions.DontRequireReceiver);
                 touched[hitinfo.transform.gameObject] = true;
